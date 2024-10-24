@@ -8,6 +8,7 @@ def main():
     
     # LogIn 클래스 내 메서드 호출
     login_instance.authenticate("조하상", "조하상123")
+    login_instance.authenticate("송재현Test", "송재현Test")
     
 if __name__ == "__main__":
     main()
