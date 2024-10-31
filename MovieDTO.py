@@ -14,8 +14,6 @@ class MovieData:
             with open(file_path, 'w') as file:
                 file.write("")  # 빈 파일로 생성
             print("movie.txt 파일이 존재하지 않아 생성합니다.")
-        else:
-            print("movie.txt 파일이 존재합니다.")
 
     def load_movieData(self):
         file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
@@ -42,7 +40,7 @@ class MovieData:
                     return False
                 seen_ids.add(movie_id)  # 아이디를 집합에 추가
 
-                # 규칙에 따른 검증
+                # 문법 형식 검사
                 if not self.validate_movie_data(movie_id_str, title, year, director, genre, runtime, views, rating, rating_count):
                     return False
 
@@ -57,10 +55,12 @@ class MovieData:
                     "rating": rating,
                     "rating_count": rating_count  # review_count를 rating_count로 변경
                 }
-
+        print("성공적으로 movie.txt 파일을 로드했습니다.")
         return True
 
+    # 문법 형식 검사
     def validate_movie_data(self, movie_id, title, year, director, genre, runtime, views, rating, rating_count):
+
         # 영화 아이디: 중복되지 않으며 0 이상의 정수
         if not (movie_id.isdigit() and int(movie_id) >= 0):
             print(f"영화 아이디 형식 오류: {movie_id}")
@@ -116,3 +116,16 @@ class MovieData:
             return False
 
         return True
+
+
+
+    def update_movieFile(self):
+        file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
+
+        with open(file_path, 'w', encoding='utf-8') as file:
+            for movie_id, data in self.movies.items():
+                # 각 영화 정보를 슬래시로 구분하여 저장
+                line = f"{movie_id}/{data['title']}/{data['year']}/{data['director']}/" \
+                       f"{data['genre']}/{data['runtime']}/{data['views']}/" \
+                       f"{data['rating']}/{data['rating_count']}\n"
+                file.write(line)
