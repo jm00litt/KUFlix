@@ -133,7 +133,8 @@ def display_movies_list():
                     print("첫 번째 페이지입니다.")
             elif action.isdigit() and 1 <= int(action) <= len(current_page_movies):
                 movie_index = int(action) - 1
-                print(f"선택한 영화: {current_page_movies[movie_index]['title']}")  # 상세 정보 보기 등 추가 가능
+                # TO_DO : 상세정보로 이동 (현재는 종료)
+                return 
             else:
                 print("존재하지 않는 영화 번호입니다." if action.isdigit() else "숫자만 입력하세요.")
 
