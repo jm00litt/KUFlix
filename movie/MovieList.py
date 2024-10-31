@@ -11,6 +11,11 @@ def get_movies(file_name="movie.txt"):
                 # 각 줄을 읽어와 슬래시(/)를 기준으로 문자열 분리하여 리스트로 저장
                 data = line.strip().split('/')  
 
+                # 데이터가 예상하는 필드 수(9개)와 일치하는지 확인
+                if len(data) != 9:
+                    print("Warning: 데이터 필드 수가 일치하지 않습니다.", line)
+                    continue  # 필드 수가 맞지 않으면 무시하고 다음 줄로
+
                 # 각 요소를 변수로 할당
                 movie_id = data[0]          # 영화 ID
                 title = data[1]             # 영화 제목
@@ -69,6 +74,8 @@ def choose_genre():
         choice = input("정렬 옵션을 선택하세요(0-6): ").strip()
 
         if choice in genre_map:
+            if choice == "0":
+                return None
             return genre_map[choice]
         elif not choice.isdigit():
             print("숫자만 입력하세요.")
@@ -85,9 +92,9 @@ def display_movies_list():
     while True:
         # 사용자에게 장르 선택을 요청
         selected_genre = choose_genre()
-        if selected_genre == "0": # 뒤로 가기 선택한 경우
-            # TO_DO : 홈화면으로 이동
-            break
+        if selected_genre is None: # 뒤로 가기 선택한 경우
+            # TO_DO : 홈화면으로 이동 (현재는 종료)
+            return 
         
         # 전체 영화 데이터를 불러온 후, 선택한 장르로 필터링
         movies = get_movies()
