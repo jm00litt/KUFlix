@@ -108,7 +108,7 @@ def display_movies_list():
 
         # 전체 영화 데이터를 불러온 후, 선택한 장르로 필터링
         movies = get_movies()
-        filtered_movies = [movie for movie in movies.values() if movie["genre"] == selected_genre]
+        filtered_movies = [{"id": movie_id, **movie} for movie_id, movie in movies.items() if movie["genre"] == selected_genre]
 
         if not filtered_movies:
             print(f"선택한 장르 '{selected_genre}'에 영화가 없습니다. 다른 장르를 선택해 주세요.")
@@ -138,8 +138,8 @@ def display_movies_list():
                     print("첫 번째 페이지입니다.")
             elif action.isdigit() and 1 <= int(action) <= len(current_page_movies):
                 movie_index = int(action) - 1
-                # TO_DO : 상세정보로 이동 (현재는 종료)
-                return
+                selected_movie = current_page_movies[movie_index]
+                return selected_movie["id"]
             else:
                 print("존재하지 않는 영화 번호입니다." if action.isdigit() else "숫자만 입력하세요.")
 
@@ -153,6 +153,3 @@ def show_movie_list(selected_genre, page, current_page_movies):
     for i, movie in enumerate(current_page_movies, start=1):
         print(f"[{i}] {movie['title']}")
     print("=" * 44)
-
-
-display_movies_list()
