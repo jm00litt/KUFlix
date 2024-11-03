@@ -1,13 +1,11 @@
 import os
 
 class MovieData:
-    def __init__(self):
-        self.movies = {}  # 영화 정보를 저장할 딕셔너리
-        self.check_file()  # 파일 존재 여부 체크
-        if not self.load_movieData():  # 영화 데이터 로드
-            print("영화 데이터를 로드하는 데 실패했습니다.")
+    # 클래스 변수로 movies 정의
+    movies = {}  # 영화 정보를 저장할 딕셔너리
 
-    def check_file(self):
+    @classmethod
+    def check_file(cls):
         file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
         print(os.getcwd())
         if not os.path.exists(file_path):
@@ -15,7 +13,8 @@ class MovieData:
                 file.write("")  # 빈 파일로 생성
             print("movie.txt 파일이 존재하지 않아 생성합니다.")
 
-    def load_movieData(self):
+    @classmethod
+    def load_movieData(cls):
         file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
 
         seen_ids = set()  # 영화 아이디를 저장할 집합 (중복 검사)
@@ -41,26 +40,26 @@ class MovieData:
                 seen_ids.add(movie_id)  # 아이디를 집합에 추가
 
                 # 문법 형식 검사
-                if not self.validate_movie_data(movie_id_str, title, year, director, genre, runtime, views, rating, rating_count):
+                if not cls.validate_movie_data(movie_id_str, title, year, director, genre, runtime, views, rating, rating_count):
                     return False
 
                 # 딕셔너리에 영화 데이터 추가
-                self.movies[movie_id] = {
+                cls.movies[movie_id] = {
                     "title": title,
-                    "year": year,  # release_year를 year로 변경
+                    "year": year,
                     "director": director,
                     "genre": genre,
                     "runtime": runtime,
                     "views": views,
                     "rating": rating,
-                    "rating_count": rating_count  # review_count를 rating_count로 변경
+                    "rating_count": rating_count
                 }
         print("성공적으로 movie.txt 파일을 로드했습니다.")
         return True
 
     # 문법 형식 검사
-    def validate_movie_data(self, movie_id, title, year, director, genre, runtime, views, rating, rating_count):
-
+    @classmethod
+    def validate_movie_data(cls, movie_id, title, year, director, genre, runtime, views, rating, rating_count):
         # 영화 아이디: 중복되지 않으며 0 이상의 정수
         if not (movie_id.isdigit() and int(movie_id) >= 0):
             print(f"영화 아이디 형식 오류: {movie_id}")
@@ -117,13 +116,12 @@ class MovieData:
 
         return True
 
-
-
-    def update_movieFile(self):
+    @classmethod
+    def update_movieFile(cls):
         file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
 
         with open(file_path, 'w', encoding='utf-8') as file:
-            for movie_id, data in self.movies.items():
+            for movie_id, data in cls.movies.items():
                 # 각 영화 정보를 슬래시로 구분하여 저장
                 line = f"{movie_id}/{data['title']}/{data['year']}/{data['director']}/" \
                        f"{data['genre']}/{data['runtime']}/{data['views']}/" \
