@@ -1,7 +1,7 @@
 # 영화 상세정보 프롬프트
 
 from movie.MovieList import get_movies
-
+from MovieDTO import MovieData
 # 임의의 사용자 정보 설정
 user_info = {
     "password": "password123",
@@ -19,6 +19,7 @@ def display_movie_details():
     if movie:
         # 조회수 증가
         add_viewcount(movie_id)
+        movie['views'] += 1  # 증가된 조회수를 movie 객체에 반영
         while True:
             favorited_status = "♥︎" if movie_id in user_info["favorited_movies"] else "♡"
             print(f"============================================")
