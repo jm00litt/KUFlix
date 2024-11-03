@@ -2,16 +2,23 @@
 
 from movie.MovieList import get_movies
 
-# 영화 상세정보 프롬프트
+# 임의의 사용자 정보 설정
+user_info = {
+    "password": "password123",
+    "favorited_movies": [],  # 찜한 영화 목록
+    "rated_movies": {}
+}
 def display_movie_details():
     # movie.txt 파일에서 영화 데이터 불러오기
     movies = get_movies()  
 
     # 영화 ID가 "7"인 영화 세부 정보 출력
-    movie_id = "7"
+    movie_id = "1"
     movie = movies.get(movie_id)
 
     if movie:
+        # 조회수 증가
+        add_viewcount(movie_id)
         while True:
             favorited_status = "♥︎" if movie_id in user_info["favorited_movies"] else "♡"
             print(f"============================================")
@@ -77,11 +84,22 @@ def rate_movie(movie, user_info, movie_id):
         user_info["rated_movies"][movie_id] = int(rating_input)
         print(f"평점이 {rating_input}점으로 등록되었습니다!\n")
 
-# 임의의 사용자 정보 설정
-user_info = {
-    "password": "password123",
-    "favorited_movies": [],  # 찜한 영화 목록
-    "rated_movies": {}
-}
+def add_viewcount(movie_id):
+    # movie.txt에서 전체 영화 데이터를 불러오기
+    movies = get_movies()
 
+    # 해당 movie_id가 movies에 있는지 확인 후 조회수 증가
+    if movie_id in movies:
+        movies[movie_id]['views'] += 1
+
+        # 변경된 데이터를 movie.txt에 반영
+        with open("movie.txt", "w", encoding="utf-8") as file:
+            for id, data in movies.items():
+                # 영화 정보를 슬래시로 구분하여 저장
+                line = f"{id}/{data['title']}/{data['year']}/{data['director']}/" \
+                       f"{data['genre']}/{data['runtime']}/{data['views']}/" \
+                       f"{data['rating']}/{data['rating_count']}\n"
+                file.write(line)
+
+    
 display_movie_details()
