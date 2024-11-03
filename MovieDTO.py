@@ -49,13 +49,13 @@ class MovieData:
                 # 딕셔너리에 영화 데이터 추가
                 self.movies[movie_id] = {
                     "title": title,
-                    "year": year,  # release_year를 year로 변경
+                    "year": int(year),  # release_year를 year로 변경
                     "director": director,
                     "genre": genre,
-                    "runtime": runtime,
-                    "views": views,
-                    "rating": rating,
-                    "rating_count": rating_count  # review_count를 rating_count로 변경
+                    "runtime": int(runtime),
+                    "views": int(views),
+                    "rating": float(rating),
+                    "rating_count": int(rating_count)  # review_count를 rating_count로 변경
                 }
         # print("성공적으로 movie.txt 파일을 로드했습니다.")
         return True
