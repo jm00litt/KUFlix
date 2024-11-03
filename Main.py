@@ -6,8 +6,8 @@ def main():
 
     print(movieData_instance.movies.keys())
     movieData_instance.movies[1]['year'] = 2021
-    movieData_instance.update_movieFile()
-    
+    movieData_instance.update_movie_file()
+
     display_movie_details()
 if __name__ == "__main__":
     main()
