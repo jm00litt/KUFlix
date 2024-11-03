@@ -1,13 +1,14 @@
 from MovieDTO import MovieData
-from movie.MovieInfo import display_movie_details
+from movie.MovieList import display_movies_list  # 영화 목록을 표시하는 함수
+from movie.MovieInfo import display_movie_details  # 영화 상세 정보를 표시하는 함수
+
 
 def main():
-    movieData_instance = MovieData() # MovieData 클래스 인스턴스 생성 및 movie.txt 파일 확인 및 로드
+    selected_movie_id = display_movies_list()
 
-    print(movieData_instance.movies.keys())
-    movieData_instance.movies[1]['year'] = 2021
-    movieData_instance.update_movie_file()
+    if selected_movie_id is not None:
+        display_movie_details(selected_movie_id)
 
-    display_movie_details()
+
 if __name__ == "__main__":
     main()
