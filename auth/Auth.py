@@ -34,7 +34,7 @@ def is_id_exist(user_id: str) -> bool:
     registered_ids = list(load_user_data().keys())
     return user_id in registered_ids
 
-def is_password_correct(password: str) -> bool:
+def is_password_correct(user_id : str,password: str) -> bool:
     """
     사용자가 입력한 비밀번호가 해당 아이디의 비밀번호가 맞는지 확인합니다.
     
@@ -45,7 +45,7 @@ def is_password_correct(password: str) -> bool:
         bool: 비밀번호가 일치하면 True, 일치하지 않으면 False
     """
     users = load_user_data()
-    return password in users.values()
+    return users[user_id] == password
 
 def save_user_data(user_id: str, password: str):
     """
@@ -85,7 +85,9 @@ def display_auth_menu():
         elif selected_number == 1:
            sign_up()
         elif selected_number == 2:
-            login()
+            from Home import Home as home
+            home.setUserId(login())
+            home.home()
             
     except ValueError as e:
         print(f"\n오류: {str(e)}")
@@ -102,17 +104,27 @@ def login():
         str: 로그인 성공 시 사용자 ID 반환
     """
     users = load_user_data()
+    print("=" * 30)
+    print("[로그인 서비스] ")
+    print("=" * 30)
+    print('로그인을 시작합니다.')
     
     while True:
-        user_id = input()
-        if not is_id_exist(user_id):
-            return None
+        user_id = input('아이디를 입력하세요 : ')
+        if is_id_exist(user_id):
+            break
+        else 
+            print('존재하지 않는 아이디입니다.\n')
+            continue
             
-        password = input()
-        if not is_password_correct(password):
-            return None
-            
-        return user_id
+    while True :
+        password = input('비밀번호를 입력하세요 : ')
+        if is_password_correct(user_id,password):
+            print("=" * 30)
+            print('로그인 성공!')
+            return user_id            
+        else 
+            print('일치하지 않는 비밀번호입니다.')
 
 def sign_up():
     """
