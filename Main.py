@@ -2,8 +2,6 @@ from MovieDTO import MovieData
 from movie.MovieInfo import display_movie_details 
 
 def main():
-    print("여기서 부터 시작")
-
     movieData_instance = MovieData() # MovieData 클래스 인스턴스 생성 및 movie.txt 파일 확인 및 로드
 
     print(movieData_instance.movies.keys())
