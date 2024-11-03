@@ -7,6 +7,7 @@ def main():
     print(movieData_instance.movies.keys())
     movieData_instance.movies[1]['year'] = 2021
     movieData_instance.update_movieFile()
+    display_auth_menu()
     
     display_movie_details()
 if __name__ == "__main__":
