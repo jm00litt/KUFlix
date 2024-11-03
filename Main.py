@@ -6,9 +6,10 @@ def main():
     if not MovieData.load_movieData():
         print("프로그램을 종료합니다.")
 
-    print(MovieData.movies.keys())
-    MovieData.movies[1]['year'] = 2011
-    MovieData.update_movieFile()
+    print(movieData_instance.movies.keys())
+    movieData_instance.movies[1]['year'] = 2021
+    movieData_instance.update_movieFile()
+    display_auth_menu()
     
     #display_movie_details()
 
