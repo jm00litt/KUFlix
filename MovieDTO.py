@@ -1,21 +1,22 @@
 import os
 
+
 class MovieData:
     def __init__(self):
         self.movies = {}  # 영화 정보를 저장할 딕셔너리
         self.check_file()  # 파일 존재 여부 체크
-        if not self.load_movieData():  # 영화 데이터 로드
+        if not self.load_movie_data():  # 영화 데이터 로드
             print("영화 데이터를 로드하는 데 실패했습니다.")
 
     def check_file(self):
         file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
-        print(os.getcwd())
+        # print(os.getcwd())
         if not os.path.exists(file_path):
             with open(file_path, 'w') as file:
                 file.write("")  # 빈 파일로 생성
             print("movie.txt 파일이 존재하지 않아 생성합니다.")
 
-    def load_movieData(self):
+    def load_movie_data(self):
         file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
 
         seen_ids = set()  # 영화 아이디를 저장할 집합 (중복 검사)
@@ -41,7 +42,8 @@ class MovieData:
                 seen_ids.add(movie_id)  # 아이디를 집합에 추가
 
                 # 문법 형식 검사
-                if not self.validate_movie_data(movie_id_str, title, year, director, genre, runtime, views, rating, rating_count):
+                if not self.validate_movie_data(movie_id_str, title, year, director, genre, runtime, views, rating,
+                                                rating_count):
                     return False
 
                 # 딕셔너리에 영화 데이터 추가
@@ -55,7 +57,7 @@ class MovieData:
                     "rating": rating,
                     "rating_count": rating_count  # review_count를 rating_count로 변경
                 }
-        print("성공적으로 movie.txt 파일을 로드했습니다.")
+        # print("성공적으로 movie.txt 파일을 로드했습니다.")
         return True
 
     # 문법 형식 검사
@@ -82,7 +84,7 @@ class MovieData:
             return False
 
         # 장르: 허용된 장르 중 하나
-        valid_genres = ['액션', '코미디', '로맨스', '공포', 'SF']
+        valid_genres = ['액션', '코미디', '로맨스', '호러', 'SF']
         if genre.strip() not in valid_genres:
             print(f"장르 형식 오류: {genre}")
             return False
@@ -117,9 +119,7 @@ class MovieData:
 
         return True
 
-
-
-    def update_movieFile(self):
+    def update_movie_file(self):
         file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
 
         with open(file_path, 'w', encoding='utf-8') as file:
