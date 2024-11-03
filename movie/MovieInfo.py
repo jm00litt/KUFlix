@@ -1,11 +1,11 @@
 # 영화 상세정보 프롬프트
 
-import MovieList
+from movie.MovieList import get_movies
 
 # 영화 상세정보 프롬프트
 def display_movie_details():
     # movie.txt 파일에서 영화 데이터 불러오기
-    movies = MovieList.get_movies()  
+    movies = get_movies()  
 
     # 영화 ID가 "7"인 영화 세부 정보 출력
     movie_id = "7"

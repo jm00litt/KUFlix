@@ -43,17 +43,17 @@ class Home:
                     break
                 elif selected_number == 1:
                     # MovieList 클래스의 인스턴스를 생성하고 display_movie_list 메서드 호출
-                    from MovieList import MovieList
+                    from movie.MovieList import MovieList
                     movie_list = MovieList()
                     movie_list.choose_genre()
                 elif selected_number == 2:
                     # Search 클래스의 인스턴스를 생성하고 display_searchpage 메서드 호출
-                    from Search import Search
+                    from search.Search import Search
                     search = Search()
                     search.display_searchpage()
                 elif selected_number == 3:
                     # MyPage 클래스의 인스턴스를 생성하고 display_mypage 메서드 호출
-                    from MyPage import MyPage
+                    from mypage.MyPage import MyPage
                     mypage = MyPage()
                     if mypage.load_user(self._userId):
                         mypage.display_mypage()
