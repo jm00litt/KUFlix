@@ -62,6 +62,38 @@ def save_user_data(user_id: str, password: str):
     except Exception as e:
         print(f"사용자 데이터 저장 중 오류가 발생했습니다: {e}")
 
+def display_auth_menu():
+    print("[회원가입·로그인 서비스] ")
+    print("\n" + "=" * 30)
+    print("회원가입 또는 로그인을 해주세요")
+    print("=" * 30)
+    print("[1] 회원가입 서비스")
+    print("[2] 로그인 서비스")
+    print("[0] 종료하기")
+    print("=" * 30)
+    try:
+        selected_number = input("메뉴를 선택하세요: ")
+                
+                # 입력값 검증
+        if not selected_number.isdigit():
+            raise ValueError("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
+            
+        selected_number = int(selected_number)
+        if selected_number == 0:
+            print("\n프로그램을 종료합니다.")
+            exit(0)
+        elif selected_number == 1:
+           sign_up()
+        elif selected_number == 2:
+            login()
+            
+    except ValueError as e:
+        print(f"\n오류: {str(e)}")
+        continue
+    except Exception as e:
+        print(f"\n오류가 발생했습니다: {str(e)}")
+        continue
+
 def login():
     """
     로그인 시 실행되는 함수, 로그인 완료 시 user_id 반환
@@ -86,11 +118,38 @@ def sign_up():
     """
     회원가입 시 실행되는 함수
     """
+    print("=" * 30)
+    print("[회원가입 서비스] ")
+    print("=" * 30)
+    print('회원가입을 시작합니다.')
+    
     while True:
-        user_id = input()
-        if is_id_exist(user_id):
-            return False
+        user_id = input('아이디(영문 및 숫자)를 입력하세요: ')
+        if user_id is None :
+            print('아이디를 입력해주세요.\n')
+            continue
+        elif not user_id.isalnum() :
+            print('소문자 영어와 숫자의 조합으로 이루어져야 합니다.')
+            continue
+        elif is_id_exist(user_id):
+            print('이미 존재하는 아이디입니다.\n')
+            continue
+        elif user_id.len() > 10 or user_id.len() < 6 :
+            print('6자 이상 10자 이하로 입력해주세요.\n')
+            continue
+        else : 
+            break;
+
+    while True : 
+        password = input('비밀번호(숫자)를 입력하세요 : ')
+        if password is None :
+            print('비밀번를 입력해주세요.\n')
+            continue
+        elif not user_id.isdecimal() :
+            print('비밀번호는 숫자만 포함해야 합니다.')
+            continue
+        else : 
+            break;
             
-        password = input()
         save_user_data(user_id, password)
-        return True
+        login()
