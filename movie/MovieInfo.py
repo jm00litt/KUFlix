@@ -1,19 +1,18 @@
 # 영화 상세정보 프롬프트
 
 from movie.MovieList import get_movies
-from MovieDTO import MovieData
+
 # 임의의 사용자 정보 설정
 user_info = {
     "password": "password123",
     "favorited_movies": [],  # 찜한 영화 목록
     "rated_movies": {}
 }
-def display_movie_details():
-    # movie.txt 파일에서 영화 데이터 불러오기
-    movies = get_movies()  
 
-    # 영화 ID가 "7"인 영화 세부 정보 출력
-    movie_id = "1"
+
+def display_movie_details(movie_id):
+    # movie.txt 파일에서 영화 데이터 불러오기
+    movies = get_movies()
     movie = movies.get(movie_id)
 
     if movie:
@@ -40,6 +39,7 @@ def display_movie_details():
     else:
         print("해당 ID의 영화가 존재하지 않습니다.")
 
+
 def choose_status(user_info, movie, movie_id):
     valid_input = False
     while not valid_input:
@@ -60,6 +60,7 @@ def choose_status(user_info, movie, movie_id):
         return False
     return True
 
+
 def like_movie(user_info, movie_id):
     if movie_id in user_info["favorited_movies"]:
         user_info["favorited_movies"].remove(movie_id)
@@ -67,6 +68,7 @@ def like_movie(user_info, movie_id):
     else:
         user_info["favorited_movies"].append(movie_id)
         print("\n찜이 설정되었습니다!\n")
+
 
 def rate_movie(movie, user_info, movie_id):
     print("\n평점을 남겨주세요!")
@@ -85,6 +87,7 @@ def rate_movie(movie, user_info, movie_id):
         user_info["rated_movies"][movie_id] = int(rating_input)
         print(f"평점이 {rating_input}점으로 등록되었습니다!\n")
 
+
 def add_viewcount(movie_id):
     # movie.txt에서 전체 영화 데이터를 불러오기
     movies = get_movies()
@@ -101,6 +104,3 @@ def add_viewcount(movie_id):
                        f"{data['genre']}/{data['runtime']}/{data['views']}/" \
                        f"{data['rating']}/{data['rating_count']}\n"
                 file.write(line)
-
-    
-display_movie_details()
