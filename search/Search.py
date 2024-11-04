@@ -29,6 +29,13 @@ def display_search_page(user_id):
             print("=" * 40)
 
             while True:
+
+                fravorite_list = load_user_data(user_id)["favorited_movies"]
+
+                # 총 페이지 수 계산
+                pages = (len(fravorite_list) - 1) // 10 + 1
+                current_page = 1
+
                 print(f"({current_page}페이지)")
 
                 # 현재 페이지의 시작 인덱스와 끝 인덱스 계산
@@ -37,8 +44,11 @@ def display_search_page(user_id):
 
                 # 영화 제목을 출력
                 for i in range(start_index, end_index):
-                    movie_id = searched_list[i]                # 수정할 예정
-                    print(f"[{i - start_index + 1}] {MovieData.movies[movie_id]['title']}")
+                    movie_id = searched_list[i]
+                    title = MovieData.movies[movie_id]["title"]
+                    rating = MovieData.movies[movie_id]["rating"]
+                    rating_count = MovieData.movies[movie_id]["rating_count"]
+                    print(f"[{i - start_index + 1}] {title} (평점: {rating} / 평가 인원 수: {rating_count}명)")
 
                 print("=" * 40)
                 print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
