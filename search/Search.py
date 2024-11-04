@@ -47,7 +47,7 @@ def display_search_page():
                 # 사용자 입력에 따른 페이지 전환 또는 영화 상세 정보 조회
                 if user_input == "-":
                     if current_page == 1:
-                        print("\n첫 번째 페이지입니다.")
+                        print("\n첫 페이지입니다.")
                         print("=" * 40)
                     else:
                         current_page -= 1
@@ -76,12 +76,17 @@ def display_search_page():
                         print("유효한 입력을 해주세요.")  # 입력이 숫자가 아닐 경우 처리
 
 def search_movies(keyword):
-
     matched_movie_ids = []  # 검색된 movie_id를 저장할 리스트
 
+    # keyword의 공백 제거 및 소문자 처리
+    processed_keyword = keyword.replace(" ", "").lower()
+
     for movie_id, movie_data in MovieData.movies.items():
-        # 대소문자를 구별하지 않고 부분문자열 찾기
-        if keyword.lower() in movie_data["title"].lower():
+        # title의 공백 제거 및 소문자 처리
+        processed_title = movie_data["title"].replace(" ", "").lower()
+
+        # 부분 문자열 찾기
+        if processed_keyword in processed_title:
             matched_movie_ids.append(movie_id)  # 검색된 movie_id 추가
 
     return matched_movie_ids
