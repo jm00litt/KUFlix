@@ -1,10 +1,10 @@
 # 마이페이지 프롬프트 (구현 : 김종권)
 # 미완
-# userId를 통해 찜 목록을 불러올 수 있으면 구현 (현재 userId로부터 찜 목록에 접근할 수 없음, user.txt 파일 읽고 딕셔너리로 저장하는 기능이 구현되어야 함)
+# userId를 통해 찜 목록을 불러올 수 있으면 구현 (현재 _userId로부터 찜 목록에 접근할 수 없음, user.txt 파일 읽고 딕셔너리로 저장하는 기능이 구현되어야 함)
 
-from ..MovieDTO import MovieData
+from MovieDTO import MovieData
 
-def display_my_page(self):
+def display_my_page(user_id):
     while True:
         print("\n" + "=" * 40)
         print("[마이페이지]")
@@ -13,49 +13,49 @@ def display_my_page(self):
         print("[2] 찜한 영화 목록")
         print("[0] 뒤로가기")
         print("=" * 40)
-        userSelection = input("선택할 메뉴 번호를 입력하세요(0-2): ").strip()
+        user_selection = input("선택할 메뉴 번호를 입력하세요(0-2): ").strip()
 
-        if not userSelection.isdigit():
+        if not user_selection.isdigit():
             print("숫자만 입력하세요.")
             continue
             
-        userSelection = int(userSelection)
+        user_selection = int(user_selection)
 
-        if userSelection == 0:
+        if user_selection == 0:
             print("\n이전 화면으로 돌아갑니다.")    # 수정할 예정
             return
-        elif userSelection == 1:
-            self.display_myInfo()
-        elif userSelection == 2:
-            self.display_myFavorite()
+        elif user_selection == 1:
+            display_my_info(user_id)
+        elif user_selection == 2:
+            display_my_favorite(user_id)
         else:
             print("존재하지 않는 메뉴 번호입니다.")
             continue
     
-def display_myInfo(self):
+def display_my_info(user_id):
 
         print("\n" + "=" * 40)
         print("[개인정보]")
         print("=" * 40)
-        print("아이디: jwj9096")    # 수정할 예정
+        print(f"아이디: {user_id}")    # 수정할 예정
 
-def display_myFavorite(self):
+def display_my_favorite(user_id):
 
     fravorite_list = [3, 6, 2]      # 임시 찜 목록 -> 수정할 예정
 
     # 총 페이지 수 계산
     pages = (len(fravorite_list) - 1) // 10 + 1
-    currentPage = 1
+    current_page = 1
 
     print("\n" + "=" * 40)
     print("[찜 목록]")
     print("=" * 40)
 
     while True:
-        print(f"({currentPage}페이지)")
+        print(f"({current_page}페이지)")
 
         # 현재 페이지의 시작 인덱스와 끝 인덱스 계산
-        start_index = (currentPage - 1) * 10
+        start_index = (current_page - 1) * 10
         end_index = min(start_index + 10, len(fravorite_list))
 
         # 영화 제목을 출력
@@ -66,25 +66,25 @@ def display_myFavorite(self):
         print("=" * 40)
         print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
 
-        userInput = input("상세정보를 조회할 영화 번호를 입력하세요:").strip()
+        user_input = input("상세정보를 조회할 영화 번호를 입력하세요:").strip()
             
         # 사용자 입력에 따른 페이지 전환 또는 영화 상세 정보 조회
-        if userInput == "-":
-            if currentPage == 1:
+        if user_input == "-":
+            if current_page == 1:
                 print("첫 번째 페이지입니다.")
             else:
-                currentPage -= 1
-        elif userInput == "+":
-            if currentPage == pages:
+                current_page -= 1
+        elif user_input == "+":
+            if current_page == pages:
                 print("마지막 페이지입니다.")
             else:
-                currentPage += 1
-        elif userInput == "0":
+                current_page += 1
+        elif user_input == "0":
             break
         else:
             try:
                 # 사용자가 입력한 번호가 1부터 (현재 페이지의 영화 수)까지인지 확인
-                selected_index = int(userInput) - 1  # 1부터 시작하므로 -1
+                selected_index = int(user_input) - 1  # 1부터 시작하므로 -1
                 if 0 <= selected_index < (end_index - start_index):
                     movie_id = fravorite_list[start_index + selected_index]  # 실제 ID 찾기
                     # 영화의 상세 정보를 출력 (예시로 title을 출력)

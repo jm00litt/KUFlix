@@ -7,10 +7,9 @@ from auth.Auth import display_auth_menu
 
 def main():
     MovieData.check_file()  # movie.txt 파일이 존재하는지 확인
+    MovieData.load_movie_data()
 
     display_auth_menu()
-
-
 
 if __name__ == "__main__":
     main()
