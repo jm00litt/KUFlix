@@ -3,16 +3,17 @@ from MovieDTO import MovieData
 
 
 def load_user_data(user_id):
-    with open("user.txt", "r") as file:
+    # 파일 경로 업데이트
+    with open("./data/user.txt", "r") as file:
         for line in file:
             data = line.strip().split("/")
             if data[0] == user_id:
                 user_info = {
                     "id": data[0],
                     "password": data[1],
-                    "favorited_movies": data[2].split(",") if data[2] else [],
-                    "rated_movies": {movie.split(":")[0]: float(movie.split(":")[1]) for movie in data[3].split(",")} if
-                    data[3] else {}
+                    # 각 리스트와 딕셔너리 데이터 처리 방법
+                    "favorited_movies": eval(data[2]),
+                    "rated_movies": eval(data[3])
                 }
                 return user_info
     return None  # 사용자 정보가 파일에 없을 경우 None 반환
@@ -138,27 +139,28 @@ def add_viewcount(movie_id):
 
 
 def save_user_data(user_info):
-    # 전체 파일을 읽고, 변경된 사용자 정보만 업데이트
     users = []
     updated = False
-    with open("user.txt", "r") as file:
+    # 파일 경로 업데이트
+    with open("./data/user.txt", "r") as file:
         for line in file:
             data = line.strip().split("/")
             if data[0] == user_info['id']:
-                favorited_str = ",".join(user_info["favorited_movies"])
-                rated_str = ",".join([f"{k}:{v}" for k, v in user_info["rated_movies"].items()])
+                favorited_str = str(user_info["favorited_movies"])
+                rated_str = str(user_info["rated_movies"])
                 new_line = f"{user_info['id']}/{user_info['password']}/{favorited_str}/{rated_str}\n"
                 users.append(new_line)
                 updated = True
             else:
                 users.append(line)
+
     if not updated:  # 새 사용자라면 추가
-        favorited_str = ",".join(user_info["favorited_movies"])
-        rated_str = ",".join([f"{k}:{v}" for k, v in user_info["rated_movies"].items()])
+        favorited_str = str(user_info["favorited_movies"])
+        rated_str = str(user_info["rated_movies"])
         users.append(f"{user_info['id']}/{user_info['password']}/{favorited_str}/{rated_str}\n")
 
-    # 파일에 다시 쓰기
-    with open("user.txt", "w") as file:
+    # 변경된 내용을 파일에 다시 쓰기
+    with open("./data/user.txt", "w") as file:
         file.writelines(users)
 
 
