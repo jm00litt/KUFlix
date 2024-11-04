@@ -2,7 +2,6 @@ from MovieDTO import MovieData
 # from auth.Auth import display_auth_menu
 from movie.MovieList import display_movies_list  # 영화 목록을 표시하는 함수
 from movie.MovieInfo import display_movie_details  # 영화 상세 정보를 표시하는 함수
-from mypage.MyPage import display_myPage
 from auth.Auth import display_auth_menu
 
 
