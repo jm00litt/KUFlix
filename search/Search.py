@@ -91,11 +91,12 @@ def search_movies(keyword):
     processed_keyword = keyword.replace(" ", "").lower()
 
     for movie_id, movie_data in MovieData.movies.items():
-        # title의 공백 제거 및 소문자 처리
+        # title과 director의 공백 제거 및 소문자 처리
         processed_title = movie_data["title"].replace(" ", "").lower()
+        processed_director = movie_data["director"].replace(" ", "").lower()
 
-        # 부분 문자열 찾기
-        if processed_keyword in processed_title:
-            matched_movie_ids.append(movie_id)  # 검색된 movie_id 추가
+        # title이나 director 중 하나라도 keyword를 포함하면 추가
+        if processed_keyword in processed_title or processed_keyword in processed_director:
+            matched_movie_ids.append(movie_id)
 
     return matched_movie_ids
