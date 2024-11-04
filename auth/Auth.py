@@ -125,6 +125,7 @@ def display_auth_menu():
             if not selected_number.isdigit():
                 raise ValueError("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
 
+
             selected_number = int(selected_number)
             if selected_number == 0:
                 print("\n프로그램을 종료합니다.")
@@ -132,11 +133,9 @@ def display_auth_menu():
             elif selected_number == 1:
                 sign_up()
             elif selected_number == 2:
-                from Home import Home as home
+                from home.Home import Home as home
                 home.setUserId(login())
                 home.home()
-            else : 
-                print('0부터 2까지 입력해주세요.')
 
         except ValueError as e:
             print(f"\n오류: {str(e)}")
