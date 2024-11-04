@@ -1,6 +1,7 @@
 from movie.MovieList import get_movies
 from MovieDTO import MovieData
 
+
 def load_user_data(user_id):
     with open("user.txt", "r") as file:
         for line in file:
@@ -10,21 +11,19 @@ def load_user_data(user_id):
                     "id": data[0],
                     "password": data[1],
                     "favorited_movies": data[2].split(",") if data[2] else [],
-                    "rated_movies": {movie.split(":")[0]: float(movie.split(":")[1]) for movie in data[3].split(",")} if data[3] else {}
+                    "rated_movies": {movie.split(":")[0]: float(movie.split(":")[1]) for movie in data[3].split(",")} if
+                    data[3] else {}
                 }
                 return user_info
     return None  # 사용자 정보가 파일에 없을 경우 None 반환
 
 
-def display_movie_details():
+def display_movie_details(movie_id):
     # 사용자 정보 로드
-    user_id = "test123"  
-    user_info = load_user_data(user_id) 
+    user_id = "test123"
+    user_info = load_user_data(user_id)
     # movie.txt 파일에서 영화 데이터 불러오기
-    movies = get_movies()  
-
-    # 영화 ID가 "1"인 영화 세부 정보 출력
-    movie_id = "1"
+    movies = get_movies()
     movie = movies.get(movie_id)
 
     if movie:
@@ -85,6 +84,7 @@ def like_movie(user_info, movie_id):
     # 변경된 사용자 데이터를 user.txt에 저장
     save_user_data(user_info)
 
+
 def rate_movie(movie, user_info, movie_id):
     print("\n평점을 남겨주세요!")
     print("[1] ⭐️ [2] ⭐️⭐️ [3] ⭐️⭐️⭐️ [4] ⭐️⭐️⭐️⭐️ [5] ⭐️⭐️⭐️⭐️⭐️ [0] 뒤로가기")
@@ -93,15 +93,17 @@ def rate_movie(movie, user_info, movie_id):
     if rating_input.isdigit() and 0 <= int(rating_input) <= 5:
         if int(rating_input) == 0:
             return
-        rating_input = int(rating_input)
+        rating_input = float(rating_input)  # 입력받은 평점을 float 형으로 변환
+
 
         # 평점 계산 및 저장
         current_rating = movie['rating']
         current_count = movie['rating_count']
-        
+
         if movie_id in user_info["rated_movies"]:
             # 이미 평가한 영화인 경우 평가 인원 수를 변경하지 않고 평점만 업데이트
-            new_rating = (current_rating * current_count - user_info["rated_movies"][movie_id] + rating_input) / current_count
+            new_rating = (current_rating * current_count - user_info["rated_movies"][
+                movie_id] + rating_input) / current_count
         else:
             # 새로 평가하는 경우 평가 인원 수를 증가시키고 새 평점을 계산
             new_rating = (current_rating * current_count + rating_input) / (current_count + 1)
@@ -115,6 +117,7 @@ def rate_movie(movie, user_info, movie_id):
         # 변경된 사용자 데이터와 영화 데이터를 저장
         save_user_data(user_info)
         save_movie_data(movie_id, movie)
+
 
 def add_viewcount(movie_id):
     # movie.txt에서 전체 영화 데이터를 불러오기
@@ -132,6 +135,7 @@ def add_viewcount(movie_id):
                        f"{data['genre']}/{data['runtime']}/{data['views']}/" \
                        f"{data['rating']}/{data['rating_count']}\n"
                 file.write(line)
+
 
 def save_user_data(user_info):
     # 전체 파일을 읽고, 변경된 사용자 정보만 업데이트
@@ -157,6 +161,7 @@ def save_user_data(user_info):
     with open("user.txt", "w") as file:
         file.writelines(users)
 
+
 def save_movie_data(movie_id, updated_movie):
     movies = get_movies()  # 기존 영화 목록을 불러옴
     movies[movie_id] = updated_movie  # 특정 영화 데이터를 업데이트
@@ -168,5 +173,3 @@ def save_movie_data(movie_id, updated_movie):
                    f"{data['genre']}/{data['runtime']}/{data['views']}/" \
                    f"{data['rating']}/{data['rating_count']}\n"
             file.write(line)
-    
-display_movie_details()
