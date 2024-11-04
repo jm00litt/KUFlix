@@ -9,19 +9,15 @@ def initialize_data_directory():
         bool: 초기화 성공 시 True, 실패 시 False
     """
     try:
-        # data 디렉토리 경로 설정
         data_dir = "./data"
         user_file = os.path.join(data_dir, "user.txt")
         
-        # data 디렉토리 존재 여부 확인 및 생성
         if not os.path.exists(data_dir):
             os.makedirs(data_dir)
             print("data 디렉토리가 생성되었습니다.")
         
-        # user.txt 파일 존재 여부 확인 및 생성
         if not os.path.exists(user_file):
             with open(user_file, "w", encoding='utf-8') as f:
-                # 파일을 생성만 하고 비워둡니다
                 pass
             print("user.txt 파일이 생성되었습니다.")
             
@@ -37,11 +33,9 @@ def initialize_data_directory():
         print(f"Error: 예상치 못한 오류가 발생했습니다: {e}")
         return False
 
-# 프로그램 시작 시 초기화 실행
 if not initialize_data_directory():
     print("프로그램 초기화에 실패했습니다.")
     exit(1)
-
 
 def load_user_data():
     """
@@ -53,18 +47,44 @@ def load_user_data():
     try:
         users = {}
         with open("./data/user.txt", "r", encoding='utf-8') as file:
-            for line in file:
-                data = line.strip().split('/')
-                user_id = data[0]
-                user_password = data[1]
-                users[user_id] = user_password
+            for line_num, line in enumerate(file, 1):
+                try:
+                    if not line.strip():
+                        continue
+                    
+                    data = line.strip().split('/')
+                    if len(data) < 2:
+                        print(f"Warning: 잘못된 형식의 데이터가 발견되었습니다 (라인 {line_num})")
+                        continue
+                        
+                    user_id = data[0].strip()
+                    user_password = data[1].strip()
+                    
+                    if not user_id or not user_password:
+                        print(f"Warning: 빈 ID 또는 비밀번호가 발견되었습니다 (라인 {line_num})")
+                        continue
+                        
+                    if user_id in users:
+                        print(f"Warning: 중복된 사용자 ID가 발견되었습니다: {user_id} (라인 {line_num})")
+                        continue
+                        
+                    users[user_id] = user_password
+                    
+                except Exception as e:
+                    print(f"Warning: 라인 {line_num}의 데이터를 처리하는 중 오류 발생: {e}")
+                    continue
+                    
         return users
+        
     except FileNotFoundError:
         print("파일이 존재하지 않습니다.")
+        return {}
     except UnicodeDecodeError:
         print("파일 인코딩에 문제가 있습니다.")
+        return {}
     except Exception as e:
         print(f"파일을 읽는 중 오류가 발생했습니다: {e}")
+        return {}
 
 def is_id_exist(user_id: str) -> bool:
     """
@@ -76,22 +96,32 @@ def is_id_exist(user_id: str) -> bool:
     Returns:
         bool: ID가 존재하면 True, 존재하지 않으면 False
     """
+    try:
+        if not isinstance(user_id, str):
+            return False
+            
+        registered_ids = list(load_user_data().keys())
+        return user_id.strip() in registered_ids
+        
+    except Exception as e:
+        return False
 
-    registered_ids = list(load_user_data().keys())
-    return user_id in registered_ids
-
-def is_password_correct(user_id : str,password: str) -> bool:
+def is_password_correct(user_id: str, password: str) -> bool:
     """
     사용자가 입력한 비밀번호가 해당 아이디의 비밀번호가 맞는지 확인합니다.
 
     Args:
+        user_id (str): 사용자 ID
         password (str): 사용자가 입력한 비밀번호
 
     Returns:
         bool: 비밀번호가 일치하면 True, 일치하지 않으면 False
     """
-    users = load_user_data()
-    return users[user_id] == password
+    try:
+        users = load_user_data()
+        return users[user_id] == password.strip()
+    except Exception:
+        return False
 
 def save_user_data(user_id: str, password: str):
     """
@@ -102,13 +132,16 @@ def save_user_data(user_id: str, password: str):
         password (str): 저장할 비밀번호
     """
     try:
-        user_data = f"{user_id}/{password}/[]/{{}}\n"
+        user_data = f"{user_id.strip()}/{password.strip()}/[]/{{}}\n"
         with open("./data/user.txt", "a", encoding='utf-8') as file:
             file.write(user_data)
     except Exception as e:
         print(f"사용자 데이터 저장 중 오류가 발생했습니다: {e}")
 
 def display_auth_menu():
+    """
+    인증 메뉴를 표시하고 사용자 입력을 처리합니다.
+    """
     print("[회원가입·로그인 서비스] ")
     print("\n" + "=" * 30)
     print("회원가입 또는 로그인을 해주세요")
@@ -117,29 +150,32 @@ def display_auth_menu():
     print("[2] 로그인 서비스")
     print("[0] 종료하기")
     print("=" * 30)
-    try:
-        selected_number = input("메뉴를 선택하세요: ")
+    
+    while True:
+        try:
+            selected_number = input("메뉴를 선택하세요: ").strip()
 
-                # 입력값 검증
-        if not selected_number.isdigit():
-            raise ValueError("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
+            if not selected_number.isdigit():
+                print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
+                continue
 
-        selected_number = int(selected_number)
-        if selected_number == 0:
-            print("\n프로그램을 종료합니다.")
-            exit(0)
-        elif selected_number == 1:
-           sign_up()
-        elif selected_number == 2:
-            from Home import Home as home
-            home.setUserId(login())
-            home.home()
+            selected_number = int(selected_number)
+            if selected_number == 0:
+                print("\n프로그램을 종료합니다.")
+                exit(0)
+            elif selected_number == 1:
+                sign_up()
+            elif selected_number == 2:
+                from home.Home import Home as home
+                home.setUserId(login())
+                home.home()
+            else:
+                print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
 
-    except ValueError as e:
-        print(f"\n오류: {str(e)}")
-    except Exception as e:
-        print(f"\n오류가 발생했습니다: {str(e)}")
-
+        except ValueError:
+            print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
+        except Exception:
+            print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
 def login():
     """
     로그인 시 실행되는 함수, 로그인 완료 시 user_id 반환
@@ -147,27 +183,26 @@ def login():
     Returns:
         str: 로그인 성공 시 사용자 ID 반환
     """
-    users = load_user_data()
     print("=" * 30)
     print("[로그인 서비스] ")
     print("=" * 30)
     print('로그인을 시작합니다.')
 
     while True:
-        user_id = input('아이디를 입력하세요 : ')
+        user_id = input('아이디를 입력하세요 : ').strip()
         if is_id_exist(user_id):
             break
-        else :
+        else:
             print('존재하지 않는 아이디입니다.\n')
             continue
 
-    while True :
-        password = input('비밀번호를 입력하세요 : ')
-        if is_password_correct(user_id,password):
+    while True:
+        password = input('비밀번호를 입력하세요 : ').strip()
+        if is_password_correct(user_id, password):
             print("=" * 30)
             print('로그인 성공!')
             return user_id
-        else :
+        else:
             print('일치하지 않는 비밀번호입니다.')
 
 def sign_up():
@@ -180,32 +215,42 @@ def sign_up():
     print('회원가입을 시작합니다.')
 
     while True:
-        user_id = input('아이디(영문 및 숫자)를 입력하세요: ')
-        if user_id is None :
+        user_id = input('아이디(영문 및 숫자)를 입력하세요: ').strip()
+        
+        if not user_id:
             print('아이디를 입력해주세요.\n')
             continue
-        elif not user_id.isalnum() :
+            
+        if not user_id.isalnum():
             print('소문자 영어와 숫자의 조합으로 이루어져야 합니다.')
             continue
-        elif is_id_exist(user_id):
+            
+        if is_id_exist(user_id):
             print('이미 존재하는 아이디입니다.\n')
             continue
-        elif len(user_id) > 10 or len(user_id) < 6 :
+            
+        if len(user_id) > 10 or len(user_id) < 6:
             print('6자 이상 10자 이하로 입력해주세요.\n')
             continue
-        else :
-            break
+            
+        break
 
-    while True :
-        password = input('비밀번호(숫자)를 입력하세요 : ')
-        if password is None :
+    while True:
+        password = input('비밀번호(숫자)를 입력하세요 : ').strip()
+        
+        if not password:
             print('비밀번호를 입력해주세요.\n')
             continue
-        elif not password.isnumeric() :
+            
+        if not password.isnumeric():
             print('비밀번호는 숫자만 포함해야 합니다.')
             continue
-        else :
-            break
+            
+        if len(password) != 6:
+            print('비밀번호는 6자리여야 합니다.')
+            continue
+            
+        break
 
     save_user_data(user_id, password)
     login()
