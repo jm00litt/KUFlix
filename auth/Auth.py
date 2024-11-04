@@ -131,7 +131,7 @@ def display_auth_menu():
         elif selected_number == 1:
            sign_up()
         elif selected_number == 2:
-            from Home import Home as home
+            from home.Home import Home as home
             home.setUserId(login())
             home.home()
 
