@@ -51,6 +51,7 @@ def display_movie_details():
     else:
         print("해당 ID의 영화가 존재하지 않습니다.")
 
+
 def choose_status(user_info, movie, movie_id):
     valid_input = False
     while not valid_input:
@@ -70,6 +71,7 @@ def choose_status(user_info, movie, movie_id):
     elif user_input == 0:
         return False
     return True
+
 
 def like_movie(user_info, movie_id):
     # 찜 목록에 영화가 있는지 확인하고, 상태를 변경

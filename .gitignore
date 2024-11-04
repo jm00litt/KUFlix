@@ -1,4 +1,8 @@
+.idea/
 __pycache__/
 movie/__pycache__/*.pyc
 *.pyc
 user.txt
+.DS_Store
+venv/
+*.env
