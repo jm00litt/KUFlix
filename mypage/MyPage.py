@@ -44,18 +44,25 @@ def display_my_info(user_id):
 
 def display_my_favorite(user_id):
 
-    fravorite_list = load_user_data(user_id)["favorited_movies"]
-    #fravorite_list = [3, 6, 2]      # 임시 찜 목록 -> 수정할 예정
+    # fravorite_list = load_user_data(user_id)["favorited_movies"]
+    # #fravorite_list = [3, 6, 2]      # 임시 찜 목록 -> 수정할 예정
 
-    # 총 페이지 수 계산
-    pages = (len(fravorite_list) - 1) // 10 + 1
-    current_page = 1
+    # # 총 페이지 수 계산
+    # pages = (len(fravorite_list) - 1) // 10 + 1
+    # current_page = 1
 
     print("\n" + "=" * 40)
     print("[찜 목록]")
     print("=" * 40)
 
     while True:
+        fravorite_list = load_user_data(user_id)["favorited_movies"]
+        #fravorite_list = [3, 6, 2]      # 임시 찜 목록 -> 수정할 예정
+
+        # 총 페이지 수 계산
+        pages = (len(fravorite_list) - 1) // 10 + 1
+        current_page = 1
+        
         print(f"({current_page}페이지)")
 
         # 현재 페이지의 시작 인덱스와 끝 인덱스 계산
