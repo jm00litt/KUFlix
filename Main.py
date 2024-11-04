@@ -12,7 +12,7 @@ def main():
 
     if selected_movie_id is not None:
         display_movie_details(selected_movie_id)
-1
+
     # display_auth_menu()
 
     print(MovieData.movies.keys())

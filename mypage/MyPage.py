@@ -40,8 +40,8 @@ def display_myInfo(self):
         print("아이디: jwj9096")    # 수정할 예정
 
 def display_myFavorite(self):
-    # 임시 찜 목록
-    fravorite_list = [3, 6, 2]
+
+    fravorite_list = [3, 6, 2]      # 임시 찜 목록 -> 수정할 예정
 
     # 총 페이지 수 계산
     pages = (len(fravorite_list) - 1) // 10 + 1
