@@ -159,6 +159,7 @@ def display_auth_menu():
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
                 continue
 
+<<<<<<< HEAD
             selected_number = int(selected_number)
             
             if selected_number == 0:
@@ -172,6 +173,18 @@ def display_auth_menu():
                 home.home()
             else:
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
+=======
+        selected_number = int(selected_number)
+        if selected_number == 0:
+            print("\n프로그램을 종료합니다.")
+            exit(0)
+        elif selected_number == 1:
+           sign_up()
+        elif selected_number == 2:
+            from home.Home import Home as home
+            home.setUserId(login())
+            home.home()
+>>>>>>> d53d7d4653728c45109e0dc3c5ea32389fa4c08b
 
         except Exception as e:
             print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
