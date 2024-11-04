@@ -1,10 +1,10 @@
 # 검색화면 프롬프트 (구현 : 김종권)
 # 미완
 
-from ..MovieDTO import MovieData
-from ..movie.MovieList import get_movies
+from MovieDTO import MovieData
+from movie.MovieList import get_movies
 
-def display_searchPage(self):
+def display_search_page():
 
     while True:
         print("\n" + "=" * 40)
@@ -14,7 +14,7 @@ def display_searchPage(self):
         userInput = input("찾고자 하는 영화 이름을 입력하세요: ").strip()
 
         if userInput == "0":
-            break;
+            break
         else:
             searchedList = search_movies(userInput)
             pages = (len(searchedList) - 1) // 10 + 1
