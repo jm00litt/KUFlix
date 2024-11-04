@@ -43,9 +43,11 @@ class Home:
                     break
                 elif selected_number == 1:
                     # MovieList 클래스의 인스턴스를 생성하고 display_movie_list 메서드 호출
-                    from movie.MovieList import MovieList
-                    movie_list = MovieList()
-                    movie_list.choose_genre()
+                    from movie.MovieList import display_movies_list
+                    from movie.MovieInfo import display_movie_details
+                    selected_movie_id = display_movies_list()
+                    if selected_movie_id is not None:
+                        display_movie_details(self._userId,selected_movie_id)
                 elif selected_number == 2:
                     # Search 클래스의 인스턴스를 생성하고 display_searchpage 메서드 호출
                     from search.Search import Search

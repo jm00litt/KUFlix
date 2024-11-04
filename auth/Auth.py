@@ -170,7 +170,7 @@ def display_auth_menu():
                 home_instance = Home()  # Home 클래스의 인스턴스 생성
                 user_id = login()  # 로그인 수행
                 home_instance.setUserId(user_id)  # 사용자 ID 설정
-                home_instance.home()  # 홈 메뉴 로직 실행만 호출
+                home_instance.home()  # 홈 메뉴 로직 실행
                 return  # while 문을 빠져나감
             else:
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
