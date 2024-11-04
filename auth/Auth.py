@@ -142,26 +142,24 @@ def display_auth_menu():
     """
     인증 메뉴를 표시하고 사용자 입력을 처리합니다.
     """
+    print("[회원가입·로그인 서비스] ")
+    print("\n" + "=" * 30)
+    print("회원가입 또는 로그인을 해주세요")
+    print("=" * 30)
+    print("[1] 회원가입 서비스")
+    print("[2] 로그인 서비스")
+    print("[0] 종료하기")
+    print("=" * 30)
+    
     while True:
         try:
-            print("[회원가입·로그인 서비스] ")
-            print("\n" + "=" * 30)
-            print("회원가입 또는 로그인을 해주세요")
-            print("=" * 30)
-            print("[1] 회원가입 서비스")
-            print("[2] 로그인 서비스")
-            print("[0] 종료하기")
-            print("=" * 30)
-            
             selected_number = input("메뉴를 선택하세요: ").strip()
 
-            if not selected_number or not selected_number.isdigit():
+            if not selected_number.isdigit():
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
                 continue
 
-<<<<<<< HEAD
             selected_number = int(selected_number)
-            
             if selected_number == 0:
                 print("\n프로그램을 종료합니다.")
                 exit(0)
@@ -173,22 +171,11 @@ def display_auth_menu():
                 home.home()
             else:
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
-=======
-        selected_number = int(selected_number)
-        if selected_number == 0:
-            print("\n프로그램을 종료합니다.")
-            exit(0)
-        elif selected_number == 1:
-           sign_up()
-        elif selected_number == 2:
-            from home.Home import Home as home
-            home.setUserId(login())
-            home.home()
->>>>>>> d53d7d4653728c45109e0dc3c5ea32389fa4c08b
 
-        except Exception as e:
+        except ValueError:
             print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
-
+        except Exception:
+            print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
 def login():
     """
     로그인 시 실행되는 함수, 로그인 완료 시 user_id 반환
