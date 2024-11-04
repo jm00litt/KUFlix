@@ -93,7 +93,8 @@ def rate_movie(movie, user_info, movie_id):
     if rating_input.isdigit() and 0 <= int(rating_input) <= 5:
         if int(rating_input) == 0:
             return
-        rating_input = int(rating_input)
+        rating_input = float(rating_input)  # 입력받은 평점을 float 형으로 변환
+
 
         # 평점 계산 및 저장
         current_rating = movie['rating']
