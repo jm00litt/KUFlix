@@ -4,7 +4,7 @@
 
 from ..MovieDTO import MovieData
 
-def display_myPage(self):
+def display_my_page(self):
     while True:
         print("\n" + "=" * 40)
         print("[마이페이지]")

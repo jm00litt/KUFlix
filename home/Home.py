@@ -50,13 +50,12 @@ class Home:
                         display_movie_details(self._userId,selected_movie_id)
                 elif selected_number == 2:
                     # Search 클래스의 인스턴스를 생성하고 display_searchpage 메서드 호출
-                    from search.Search import Search
-                    search = Search()
-                    search.display_searchpage()
+                    from search.Search import display_search_page
+                    display_search_page()
                 elif selected_number == 3:
                     # MyPage 클래스의 인스턴스를 생성하고 display_mypage 메서드 호출
-                    from mypage.MyPage import MyPage
-                    mypage = MyPage()
+                    from mypage.MyPage import display_my_page
+                    mypage = display_my_page()
                     if mypage.load_user(self._userId):
                         mypage.display_mypage()
                 else:
