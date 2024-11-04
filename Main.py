@@ -14,11 +14,6 @@ def main():
 
     # display_auth_menu()
 
-    print(MovieData.movies.keys())
-    MovieData.movies[1]['year'] = 2021
-    MovieData.update_movieFile()
-        
-    #display_movie_details()
 
 if __name__ == "__main__":
     main()
