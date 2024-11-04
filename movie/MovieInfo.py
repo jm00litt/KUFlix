@@ -19,9 +19,9 @@ def load_user_data(user_id):
     return None  # 사용자 정보가 파일에 없을 경우 None 반환
 
 
-def display_movie_details(movie_id):
+def display_movie_details(id,movie_id):
     # 사용자 정보 로드
-    user_id = "test123"
+    user_id = id
     user_info = load_user_data(user_id)
     # movie.txt 파일에서 영화 데이터 불러오기
     movies = get_movies()
