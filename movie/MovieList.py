@@ -143,7 +143,6 @@ def display_movies_list():
             else:
                 print("존재하지 않는 영화 번호입니다." if action.isdigit() else "숫자만 입력하세요.")
 
-
 def show_movie_list(selected_genre, page, current_page_movies):
     print("=" * 44)
     print(f"[리스트] ({selected_genre})")

@@ -2,9 +2,10 @@
 # 미완
 
 from MovieDTO import MovieData
-from movie.MovieList import get_movies
+from movie.MovieInfo import display_movie_details
+from movie.MovieInfo import load_user_data
 
-def display_search_page():
+def display_search_page(user_id):
 
     while True:
         print("\n" + "=" * 40)
@@ -67,9 +68,7 @@ def display_search_page():
                         selected_index = int(user_input) - 1  # 1부터 시작하므로 -1
                         if 0 <= selected_index < (end_index - start_index):
                             movie_id = searched_list[start_index + selected_index]  # 실제 ID 찾기
-                            # 영화의 상세 정보를 출력 (예시로 title을 출력)
-                            print(f"선택한 영화 제목: {MovieData.movies[movie_id]['title']}")
-                            # 여기서 추가적인 상세 정보를 출력할 수 있음
+                            display_movie_details(user_id, movie_id)
                         else:
                             print("유효하지 않은 영화 번호입니다.")
                     except ValueError:
