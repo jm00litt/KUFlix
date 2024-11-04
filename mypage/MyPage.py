@@ -3,8 +3,11 @@
 # userId를 통해 찜 목록을 불러올 수 있으면 구현 (현재 _userId로부터 찜 목록에 접근할 수 없음, user.txt 파일 읽고 딕셔너리로 저장하는 기능이 구현되어야 함)
 
 from MovieDTO import MovieData
+from movie.MovieInfo import display_movie_details
+from movie.MovieInfo import load_user_data
 
 def display_my_page(user_id):
+
     while True:
         print("\n" + "=" * 40)
         print("[마이페이지]")
@@ -37,11 +40,12 @@ def display_my_info(user_id):
         print("\n" + "=" * 40)
         print("[개인정보]")
         print("=" * 40)
-        print(f"아이디: {user_id}")    # 수정할 예정
+        print(f"아이디: {user_id}")
 
 def display_my_favorite(user_id):
 
-    fravorite_list = [3, 6, 2]      # 임시 찜 목록 -> 수정할 예정
+    fravorite_list = load_user_data(user_id)["favorited_movies"]
+    #fravorite_list = [3, 6, 2]      # 임시 찜 목록 -> 수정할 예정
 
     # 총 페이지 수 계산
     pages = (len(fravorite_list) - 1) // 10 + 1
@@ -87,9 +91,7 @@ def display_my_favorite(user_id):
                 selected_index = int(user_input) - 1  # 1부터 시작하므로 -1
                 if 0 <= selected_index < (end_index - start_index):
                     movie_id = fravorite_list[start_index + selected_index]  # 실제 ID 찾기
-                    # 영화의 상세 정보를 출력 (예시로 title을 출력)
-                    print(f"선택한 영화 제목: {MovieData.movies[movie_id]['title']}")
-                    # 여기서 추가적인 상세 정보를 출력할 수 있음
+                    display_movie_details(user_id, movie_id)
                 else:
                     print("유효하지 않은 영화 번호입니다.")
             except ValueError:

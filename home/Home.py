@@ -50,7 +50,7 @@ class Home:
                         display_movie_details(self._userId,selected_movie_id)
                 elif selected_number == 2:
                     from search.Search import display_search_page
-                    display_search_page()
+                    display_search_page(self._userId)
                 elif selected_number == 3:
                     from mypage.MyPage import display_my_page
                     display_my_page(self._userId)
