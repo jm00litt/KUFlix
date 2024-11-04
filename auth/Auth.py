@@ -117,28 +117,31 @@ def display_auth_menu():
     print("[2] 로그인 서비스")
     print("[0] 종료하기")
     print("=" * 30)
-    try:
-        selected_number = input("메뉴를 선택하세요: ")
+    while True : 
+        try:
+            selected_number = input("메뉴를 선택하세요: ")
 
-                # 입력값 검증
-        if not selected_number.isdigit():
-            raise ValueError("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
+                    # 입력값 검증
+            if not selected_number.isdigit():
+                raise ValueError("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
 
-        selected_number = int(selected_number)
-        if selected_number == 0:
-            print("\n프로그램을 종료합니다.")
-            exit(0)
-        elif selected_number == 1:
-           sign_up()
-        elif selected_number == 2:
-            from Home import Home as home
-            home.setUserId(login())
-            home.home()
+            selected_number = int(selected_number)
+            if selected_number == 0:
+                print("\n프로그램을 종료합니다.")
+                exit(0)
+            elif selected_number == 1:
+                sign_up()
+            elif selected_number == 2:
+                from Home import Home as home
+                home.setUserId(login())
+                home.home()
+            else : 
+                print('0부터 2까지 입력해주세요.')
 
-    except ValueError as e:
-        print(f"\n오류: {str(e)}")
-    except Exception as e:
-        print(f"\n오류가 발생했습니다: {str(e)}")
+        except ValueError as e:
+            print(f"\n오류: {str(e)}")
+        except Exception as e:
+            print(f"\n오류가 발생했습니다: {str(e)}")
 
 def login():
     """
