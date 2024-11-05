@@ -171,7 +171,7 @@ def display_auth_menu():
                 print("\n프로그램을 종료합니다.")
                 exit(0)
             elif selected_number == 1:
-                sign_up()
+                return sign_up()
             elif selected_number == 2:
                 return login()
             else:
@@ -259,5 +259,5 @@ def sign_up():
             continue
 
         break
-
-    login()
+    save_user_data(user_id, password)
+    return login()

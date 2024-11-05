@@ -36,9 +36,16 @@ def display_movie_details(id, movie_id):
     movie = movies.get(movie_id)
 
     if movie:
-        # 조회수 증가
-        add_viewcount(movie_id)
-        movie['views'] += 1  # 증가된 조회수를 movie 객체에 반영
+        # 조회수 증가 및 movie.txt에 업데이트
+        MovieData.load_movie_data()
+        movie_id_int = int(movie_id)
+        if movie_id_int in MovieData.movies:
+            MovieData.movies[movie_id_int]['views'] += 1
+            MovieData.update_movie_file()
+            movie['views'] = MovieData.movies[movie_id_int]['views']
+        else:
+            print("해당 ID의 영화가 존재하지 않습니다.")
+            return
         while True:
             favorited_status = "♥︎" if movie_id in user_info["favorited_movies"] else "♡"
             print(f"============================================")
@@ -127,22 +134,6 @@ def rate_movie(movie, user_info, movie_id):
         save_movie_data(movie_id, movie)
 
 
-def add_viewcount(movie_id):
-    # movie.txt에서 전체 영화 데이터를 불러오기
-    movies = get_movies()
-
-    # 해당 movie_id가 movies에 있는지 확인 후 조회수 증가
-    if movie_id in movies:
-        movies[movie_id]['views'] += 1
-
-        # 변경된 데이터를 movie.txt에 반영
-        with open("movie.txt", "w", encoding="utf-8") as file:
-            for id, data in movies.items():
-                # 영화 정보를 슬래시로 구분하여 저장
-                line = f"{id}/{data['title']}/{data['year']}/{data['director']}/" \
-                       f"{data['genre']}/{data['runtime']}/{data['views']}/" \
-                       f"{data['rating']}/{data['rating_count']}\n"
-                file.write(line)
 
 
 def save_user_data(user_info):
