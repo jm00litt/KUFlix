@@ -7,25 +7,31 @@ from movie.MovieInfo import load_user_data
 
 def display_search_page(user_id):
 
+    print("\n" + "=" * 40)
+    print("[영화 검색]")
+    print("('0'을 입력할 시 이전 화면으로 돌아갑니다.)")
+    print("\n" + "=" * 40)
+
     while True:
-        print("\n" + "=" * 40)
-        print("[영화 검색]")
-        print("('0'을 입력할 시 이전 화면으로 돌아갑니다.)")
-        print("\n" + "=" * 40)
+
         user_input = input("찾고자 하는 영화 제목을 입력하세요: ").strip()
 
         if user_input == "0":
             break
         else:
+            if len(user_input) == 0 or len(user_input) > 50:
+                print("잘못된 입력입니다. 최소 한 글자 이상, 최대 50자 이하로 입력해주세요.")
+                continue
+
             searched_list = search_movies(user_input)
             if len(searched_list) == 0:
-                print("검색 결과가 없습니다.")
+                print("검색 결과가 없습니다!")
                 continue
             pages = (len(searched_list) - 1) // 10 + 1
             current_page = 1
 
             print("\n" + "=" * 40)
-            print("[찜 목록]")
+            print("[검색 결과]")
             print("=" * 40)
 
             while True:
