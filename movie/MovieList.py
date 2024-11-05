@@ -117,9 +117,10 @@ def display_movies_list():
                 key=lambda x: x["views"],
                 reverse=True
             )
-        else: 
+        else:
             # 선택된 장르로 필터링
-            filtered_movies = [{"id": movie_id, **movie} for movie_id, movie in movies.items() if movie["genre"] == selected_genre]
+            filtered_movies = [{"id": movie_id, **movie} for movie_id, movie in movies.items() if
+                               movie["genre"] == selected_genre]
 
         if not filtered_movies:
             print(f"선택한 장르 '{selected_genre}'에 영화가 없습니다. 다른 장르를 선택해 주세요.")
@@ -154,6 +155,7 @@ def display_movies_list():
             else:
                 print("존재하지 않는 영화 번호입니다." if action.isdigit() else "숫자만 입력하세요.")
 
+
 def show_movie_list(selected_genre, page, current_page_movies):
     print("=" * 44)
     print(f"[리스트] ({selected_genre})")
@@ -161,6 +163,6 @@ def show_movie_list(selected_genre, page, current_page_movies):
     print(f"({page}페이지)")
 
     for i, movie in enumerate(current_page_movies, start=1):
-        print(f"[{i}] {movie['title']}")
+        print(f"[{i}] {movie['title']} (평점: {movie['rating']} / 평가 인원 수: {movie['rating_count']})")
     print("=" * 44)
     print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
