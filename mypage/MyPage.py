@@ -6,8 +6,8 @@ from MovieDTO import MovieData
 from movie.MovieInfo import display_movie_details
 from movie.MovieInfo import load_user_data
 
-def display_my_page(user_id):
 
+def display_my_page(user_id):
     while True:
         print("\n" + "=" * 40)
         print("[마이페이지]")
@@ -21,11 +21,11 @@ def display_my_page(user_id):
         if not user_selection.isdigit():
             print("숫자만 입력하세요.")
             continue
-            
+
         user_selection = int(user_selection)
 
         if user_selection == 0:
-            print("\n이전 화면으로 돌아갑니다.")    # 수정할 예정
+            print("\n이전 화면으로 돌아갑니다.")  # 수정할 예정
             return
         elif user_selection == 1:
             display_my_info(user_id)
@@ -34,16 +34,16 @@ def display_my_page(user_id):
         else:
             print("존재하지 않는 메뉴 번호입니다.")
             continue
-    
-def display_my_info(user_id):
 
-        print("\n" + "=" * 40)
-        print("[개인정보]")
-        print("=" * 40)
-        print(f"아이디: {user_id}")
+
+def display_my_info(user_id):
+    print("\n" + "=" * 40)
+    print("[개인정보]")
+    print("=" * 40)
+    print(f"아이디: {user_id}")
+
 
 def display_my_favorite(user_id):
-
     print("\n" + "=" * 40)
     print("[찜 목록]")
     print("=" * 40)
@@ -55,7 +55,7 @@ def display_my_favorite(user_id):
         # 총 페이지 수 계산
         pages = (len(fravorite_list) - 1) // 10 + 1
         current_page = 1
-        
+
         print(f"({current_page}페이지)")
 
         # 현재 페이지의 시작 인덱스와 끝 인덱스 계산
@@ -74,7 +74,7 @@ def display_my_favorite(user_id):
         print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
 
         user_input = input("상세정보를 조회할 영화 번호를 입력하세요:").strip()
-            
+
         # 사용자 입력에 따른 페이지 전환 또는 영화 상세 정보 조회
         if user_input == "-":
             if current_page == 1:
@@ -98,4 +98,4 @@ def display_my_favorite(user_id):
                 else:
                     print("유효하지 않은 영화 번호입니다.")
             except ValueError:
-                 print("유효한 입력을 해주세요.")  # 입력이 숫자가 아닐 경우 처리
+                print("유효한 입력을 해주세요.")  # 입력이 숫자가 아닐 경우 처리
