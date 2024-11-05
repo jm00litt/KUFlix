@@ -102,13 +102,24 @@ def display_movies_list():
     while True:
         # 사용자에게 장르 선택을 요청
         selected_genre = choose_genre()
+        print(selected_genre)
+
         if selected_genre is None:  # 뒤로 가기 선택한 경우
-            # TO_DO : 홈화면으로 이동 (현재는 종료)
             return
 
         # 전체 영화 데이터를 불러온 후, 선택한 장르로 필터링
         movies = get_movies()
-        filtered_movies = [{"id": movie_id, **movie} for movie_id, movie in movies.items() if movie["genre"] == selected_genre]
+
+        if selected_genre == "조회수":
+            # 조회수 순으로 정렬
+            filtered_movies = sorted(
+                [{"id": movie_id, **movie} for movie_id, movie in movies.items()],
+                key=lambda x: x["views"],
+                reverse=True
+            )
+        else: 
+            # 선택된 장르로 필터링
+            filtered_movies = [{"id": movie_id, **movie} for movie_id, movie in movies.items() if movie["genre"] == selected_genre]
 
         if not filtered_movies:
             print(f"선택한 장르 '{selected_genre}'에 영화가 없습니다. 다른 장르를 선택해 주세요.")
