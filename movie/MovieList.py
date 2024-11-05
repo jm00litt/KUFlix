@@ -151,6 +151,18 @@ def display_movies_list(user_id):
             elif action.isdigit() and 1 <= int(action) <= len(current_page_movies):
                 movie_id = get_movies_info(action, current_page_movies)
                 display_movie_details(user_id, movie_id)
+                movies = get_movies()
+                if selected_genre == "조회수":
+                    filtered_movies = sorted(
+                        [{"id": movie_id, **movie} for movie_id, movie in movies.items()],
+                        key=lambda x: x["views"],
+                        reverse=True
+                    )
+                else:
+                    filtered_movies = [{"id": movie_id, **movie} for movie_id, movie in movies.items() if
+                                       movie["genre"] == selected_genre]
+
+                current_page_movies = paginate_movies(filtered_movies, page)
                 show_movie_list(selected_genre, page, current_page_movies)
             else:
                 print("존재하지 않는 영화 번호입니다." if action.isdigit() else "숫자만 입력하세요.")
