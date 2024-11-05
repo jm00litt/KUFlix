@@ -30,11 +30,11 @@ class Home:
             self.display_menu()
             
             try:
-                selected_number = input("메뉴를 선택하세요: ")
+                selected_number = input("선택할 메뉴를 입력하세요(0-3): ")
                 
                 # 입력값 검증
                 if not selected_number.isdigit():
-                    raise ValueError("잘못된 입력입니다. 메뉴 번호를 입력해주세요.")
+                    raise ValueError("존재하지 않는 메뉴 번호입니다.")
                 
                 selected_number = int(selected_number)
                 
