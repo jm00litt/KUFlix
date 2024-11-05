@@ -74,12 +74,12 @@ def choose_genre():
         "0": "뒤로가기"
     }
 
-    print("=" * 44)
+    print("=" * 50)
     print("[리스트]")
-    print("=" * 44)
+    print("=" * 50)
     for key, genre in genre_map.items():
         print(f"[{key}] {genre}")
-    print("=" * 44)
+    print("=" * 50)
 
     while True:
         choice = input("정렬 옵션을 선택하세요(0-6): ").strip()
