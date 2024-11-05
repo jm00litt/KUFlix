@@ -149,31 +149,65 @@ def display_auth_menu():
     """
     인증 메뉴를 표시하고 사용자 입력을 처리합니다.
     """
+    # 초기 메뉴 출력
     print("[회원가입·로그인 서비스] ")
-    print("\n" + "=" * 30)
+    print("\n" + "=" * 50)
     print("회원가입 또는 로그인을 해주세요")
-    print("=" * 30)
+    print("=" * 50)
     print("[1] 회원가입 서비스")
     print("[2] 로그인 서비스")
     print("[0] 종료하기")
-    print("=" * 30)
+    print("=" * 50)
 
     while True:
         try:
-            selected_number = input("메뉴를 선택하세요: ").strip()
+            selected_number = input("선택하실 메뉴 번호를 입력하세요 (0-2): ").strip()
+
+            if selected_number == "0":
+                print("[회원가입·로그인 서비스] ")
+                print("\n" + "=" * 50)
+                print("회원가입 또는 로그인을 해주세요")
+                print("=" * 50)
+                print("[1] 회원가입 서비스")
+                print("[2] 로그인 서비스")
+                print("[0] 종료하기")
+                print("=" * 50)
+                selected_number = input("선택하실 메뉴 번호를 입력하세요 (0-2): ").strip()
+                if selected_number == "0":
+                    print("\n서비스를 종료합니다.")
+                    exit(0)
 
             if not selected_number.isdigit():
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
                 continue
 
             selected_number = int(selected_number)
-            if selected_number == 0:
-                print("\n프로그램을 종료합니다.")
-                exit(0)
-            elif selected_number == 1:
-                return sign_up()
+            if selected_number == 1:
+                result = sign_up()
+                if result:
+                    return result
+                print("[회원가입·로그인 서비스] ")
+                print("\n" + "=" * 50)
+                print("회원가입 또는 로그인을 해주세요")
+                print("=" * 50)
+                print("[1] 회원가입 서비스")
+                print("[2] 로그인 서비스")
+                print("[0] 종료하기")
+                print("=" * 50)
+                continue
             elif selected_number == 2:
-                return login()
+                result = login()
+                if result:
+                    return result
+                print("[회원가입·로그인 서비스] ")
+                print("\n" + "=" * 50)
+                print("회원가입 또는 로그인을 해주세요")
+                print("=" * 50)
+                print("[1] 회원가입 서비스")
+                print("[2] 로그인 서비스")
+                print("[0] 종료하기")
+                print("=" * 50)
+                continue
             else:
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
 
@@ -189,14 +223,19 @@ def login():
 
     Returns:
         str: 로그인 성공 시 사용자 ID 반환
+        None: 0 입력 시 이전 화면으로 돌아감
     """
-    print("=" * 30)
+    print("=" * 50)
     print("[로그인 서비스] ")
-    print("=" * 30)
+    print("=" * 50)
     print('로그인을 시작합니다.')
+    print("'0'을 입력하면 이전 화면으로 돌아갑니다.")
+
 
     while True:
         user_id = input('아이디를 입력하세요 : ').strip()
+        if user_id == "0":
+            return None
         if is_id_exist(user_id):
             break
         else:
@@ -204,26 +243,35 @@ def login():
             continue
 
     while True:
-        password = input('비밀번호를 입력하세요 : ').strip()
+        password = input('비밀번호를 입력하세요: ').strip()
+        if password == "0":
+            return None
         if is_password_correct(user_id, password):
             print("=" * 30)
             print('로그인 성공!')
             return user_id
         else:
-            print('일치하지 않는 비밀번호입니다.')
+            print('일치하지 않는 비밀번호입니다.\n')
 
 
 def sign_up():
     """
     회원가입 시 실행되는 함수
+    
+    Returns:
+        str: 회원가입 및 로그인 성공 시 user_id 반환
+        None: 0 입력 시 이전 화면으로 돌아감
     """
-    print("=" * 30)
+    print("=" * 50)
     print("[회원가입 서비스] ")
-    print("=" * 30)
+    print("=" * 50)
     print('회원가입을 시작합니다.')
+    print("'0'을 입력하면 이전 화면으로 돌아갑니다.")
 
     while True:
         user_id = input('아이디(영문 및 숫자)를 입력하세요: ').strip()
+        if user_id == "0":
+            return None
 
         if not user_id:
             print('아이디를 입력해주세요.\n')
@@ -244,20 +292,23 @@ def sign_up():
         break
 
     while True:
-        password = input('비밀번호(숫자)를 입력하세요 : ').strip()
+        password = input('비밀번호(숫자)를 입력하세요: ').strip()
+        if password == "0":
+            return None
 
         if not password:
             print('비밀번호를 입력해주세요.\n')
             continue
 
         if not password.isnumeric():
-            print('비밀번호는 숫자만 포함해야 합니다.')
+            print('비밀번호는 숫자만 포함해야 합니다.\n')
             continue
 
         if len(password) != 6:
-            print('비밀번호는 6자리여야 합니다.')
+            print('비밀번호는 6자리 숫자로 이루어져야 합니다.\n')
             continue
 
         break
+    
     save_user_data(user_id, password)
     return login()
