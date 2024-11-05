@@ -1,11 +1,11 @@
 class Home:
     def __init__(self):
         self._userId = ""  # 현재 로그인한 사용자의 ID를 저장하는 전역 변수
-    
+
     def setUserId(self, userId: str):
         """로그인한 사용자의 ID를 설정합니다."""
         self._userId = userId
-    
+
     def getUserId(self) -> str:
         """현재 로그인한 사용자의 ID를 반환합니다."""
         return self._userId
@@ -28,38 +28,23 @@ class Home:
         """
         while True:
             self.display_menu()
-            
+
             try:
                 selected_number = input("선택할 메뉴 번호를 입력하세요(0-3): ")
-                
+
                 # 입력값 검증
                 if not selected_number.isdigit():
                     print("숫자만 입력하세요.")
                     continue
-                
+
                 selected_number = int(selected_number)
 
                 if selected_number not in range(0, 4):
                     print("존재하지 않는 메뉴 번호입니다.")
                     continue
-                
-                if selected_number == 0:
-                    print("프로그램을 종료합니다.")
-                    break
-                elif selected_number == 1:
-                    # MovieList 클래스의 인스턴스를 생성하고 display_movie_list 메서드 호출
-                    from movie.MovieList import display_movies_list
-                    from movie.MovieInfo import display_movie_details
-                    display_movies_list(self._userId)
-                elif selected_number == 2:
-                    from search.Search import display_search_page
-                    display_search_page(self._userId)
-                elif selected_number == 3:
-                    from mypage.MyPage import display_my_page
-                    display_my_page(self._userId)
                 else:
-                   print("잘못된 입력입니다. 메뉴 번호를 입력해주세요.")
-                    
+                    return selected_number
+
             except ValueError as e:
                 print(f"\n오류: {str(e)}")
                 continue

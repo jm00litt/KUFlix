@@ -103,7 +103,6 @@ def display_movies_list(user_id):
     while True:
         # 사용자에게 장르 선택을 요청
         selected_genre = choose_genre()
-        print(selected_genre)
 
         if selected_genre is None:  # 뒤로 가기 선택한 경우
             return
