@@ -1,5 +1,13 @@
-from movie.MovieList import get_movies
 from MovieDTO import MovieData
+
+def get_movies():
+    movie_data = MovieData()
+    if movie_data.load_movie_data():
+        return movie_data.movies
+    else:
+        print("영화 데이터를 불러오는 데 실패했습니다.")
+        return {}
+
 
 def display_movie_details(user_id, movie_id):
     # 사용자 정보 로드
@@ -78,6 +86,7 @@ def rate_movie(user_id, movie_id):
     if rating_input.isdigit() and 0 <= int(rating_input) <= 5:
         if int(rating_input) == 0:
             return
+        
         rating_input = float(rating_input)
         current_rating = movie['rating']
         current_count = movie['rating_count']
