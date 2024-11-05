@@ -119,7 +119,7 @@ def display_movies_list():
         show_movie_list(selected_genre, page, current_page_movies)
 
         while True:
-            action = input("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0\n상세정보를 조회할 영화 번호를 입력하세요: ").strip()
+            action = input("상세정보를 조회할 영화 번호를 입력하세요: ").strip()
             if action == "0":
                 break  # 뒤로 가기
             elif action == "+":
@@ -152,3 +152,4 @@ def show_movie_list(selected_genre, page, current_page_movies):
     for i, movie in enumerate(current_page_movies, start=1):
         print(f"[{i}] {movie['title']}")
     print("=" * 44)
+    print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
