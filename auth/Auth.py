@@ -1,5 +1,5 @@
 import os
-from home.Home import Home 
+
 
 def initialize_data_directory():
     """
@@ -12,18 +12,18 @@ def initialize_data_directory():
     try:
         data_dir = "./data"
         user_file = os.path.join(data_dir, "user.txt")
-        
+
         if not os.path.exists(data_dir):
             os.makedirs(data_dir)
             print("data 디렉토리가 생성되었습니다.")
-        
+
         if not os.path.exists(user_file):
             with open(user_file, "w", encoding='utf-8') as f:
                 pass
             print("user.txt 파일이 생성되었습니다.")
-            
+
         return True
-        
+
     except PermissionError:
         print("Error: 파일 또는 디렉토리를 생성할 권한이 없습니다.")
         return False
@@ -34,9 +34,11 @@ def initialize_data_directory():
         print(f"Error: 예상치 못한 오류가 발생했습니다: {e}")
         return False
 
+
 if not initialize_data_directory():
     print("프로그램 초기화에 실패했습니다.")
     exit(1)
+
 
 def load_user_data():
     """
@@ -52,31 +54,31 @@ def load_user_data():
                 try:
                     if not line.strip():
                         continue
-                    
+
                     data = line.strip().split('/')
                     if len(data) < 2:
                         print(f"Warning: 잘못된 형식의 데이터가 발견되었습니다 (라인 {line_num})")
                         continue
-                        
+
                     user_id = data[0].strip()
                     user_password = data[1].strip()
-                    
+
                     if not user_id or not user_password:
                         print(f"Warning: 빈 ID 또는 비밀번호가 발견되었습니다 (라인 {line_num})")
                         continue
-                        
+
                     if user_id in users:
                         print(f"Warning: 중복된 사용자 ID가 발견되었습니다: {user_id} (라인 {line_num})")
                         continue
-                        
+
                     users[user_id] = user_password
-                    
+
                 except Exception as e:
                     print(f"Warning: 라인 {line_num}의 데이터를 처리하는 중 오류 발생: {e}")
                     continue
-                    
+
         return users
-        
+
     except FileNotFoundError:
         print("파일이 존재하지 않습니다.")
         return {}
@@ -86,6 +88,7 @@ def load_user_data():
     except Exception as e:
         print(f"파일을 읽는 중 오류가 발생했습니다: {e}")
         return {}
+
 
 def is_id_exist(user_id: str) -> bool:
     """
@@ -100,12 +103,13 @@ def is_id_exist(user_id: str) -> bool:
     try:
         if not isinstance(user_id, str):
             return False
-            
+
         registered_ids = list(load_user_data().keys())
         return user_id.strip() in registered_ids
-        
+
     except Exception as e:
         return False
+
 
 def is_password_correct(user_id: str, password: str) -> bool:
     """
@@ -124,6 +128,7 @@ def is_password_correct(user_id: str, password: str) -> bool:
     except Exception:
         return False
 
+
 def save_user_data(user_id: str, password: str):
     """
     회원가입이 완료됐을 시 아이디와 비밀번호를 user.txt에 저장합니다.
@@ -139,6 +144,7 @@ def save_user_data(user_id: str, password: str):
     except Exception as e:
         print(f"사용자 데이터 저장 중 오류가 발생했습니다: {e}")
 
+
 def display_auth_menu():
     """
     인증 메뉴를 표시하고 사용자 입력을 처리합니다.
@@ -151,7 +157,7 @@ def display_auth_menu():
     print("[2] 로그인 서비스")
     print("[0] 종료하기")
     print("=" * 30)
-    
+
     while True:
         try:
             selected_number = input("메뉴를 선택하세요: ").strip()
@@ -165,13 +171,9 @@ def display_auth_menu():
                 print("\n프로그램을 종료합니다.")
                 exit(0)
             elif selected_number == 1:
-                sign_up()
+                return sign_up()
             elif selected_number == 2:
-                home_instance = Home()  # Home 클래스의 인스턴스 생성
-                user_id = login()  # 로그인 수행
-                home_instance.setUserId(user_id)  # 사용자 ID 설정
-                home_instance.home()  # 홈 메뉴 로직 실행
-                return  # while 문을 빠져나감
+                return login()
             else:
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
 
@@ -179,6 +181,8 @@ def display_auth_menu():
             print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
         except Exception:
             print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
+
+
 def login():
     """
     로그인 시 실행되는 함수, 로그인 완료 시 user_id 반환
@@ -208,6 +212,7 @@ def login():
         else:
             print('일치하지 않는 비밀번호입니다.')
 
+
 def sign_up():
     """
     회원가입 시 실행되는 함수
@@ -219,7 +224,7 @@ def sign_up():
 
     while True:
         user_id = input('아이디(영문 및 숫자)를 입력하세요: ').strip()
-        
+
         if not user_id:
             print('아이디를 입력해주세요.\n')
             continue
@@ -228,37 +233,31 @@ def sign_up():
             print('소문자 영어와 숫자의 조합으로 이루어져야 합니다.')
             continue
         
-            
         if is_id_exist(user_id):
             print('이미 존재하는 아이디입니다.\n')
             continue
-            
+
         if len(user_id) > 10 or len(user_id) < 6:
             print('6자 이상 10자 이하로 입력해주세요.\n')
             continue
-            
+
         break
 
     while True:
         password = input('비밀번호(숫자)를 입력하세요 : ').strip()
-        
+
         if not password:
             print('비밀번호를 입력해주세요.\n')
             continue
-            
+
         if not password.isnumeric():
             print('비밀번호는 숫자만 포함해야 합니다.')
             continue
-            
+
         if len(password) != 6:
             print('비밀번호는 6자리여야 합니다.')
             continue
-            
-        break
 
+        break
     save_user_data(user_id, password)
-    home_instance = Home()  # Home 클래스의 인스턴스 생성
-    user_id = login()  # 로그인 수행
-    home_instance.setUserId(user_id)  # 사용자 ID 설정
-    home_instance.home()  # 홈 메뉴 로직 실행
-    return  # 함수 종료
+    return login()
