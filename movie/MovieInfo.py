@@ -87,7 +87,7 @@ def rate_movie(user_id, movie_id):
     if not rating_input.isdigit():
         print("숫자만 입력 가능합니다.")
         rate_movie(user_id, movie_id)
-    if int(rating_input) < 1 or int(rating_input) > 5:
+    if int(rating_input) < 0 or int(rating_input) > 5:
         print("존재하지 않는 번호 입니다.")
         rate_movie(user_id, movie_id)
     if rating_input.isdigit() and 0 <= int(rating_input) <= 5:
