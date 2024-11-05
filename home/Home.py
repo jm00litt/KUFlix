@@ -42,25 +42,8 @@ class Home:
                 if selected_number not in range(0, 4):
                     print("존재하지 않는 메뉴 번호입니다.")
                     continue
-                
-                if selected_number == 0:
-                    print("프로그램을 종료합니다.")
-                    break
-                elif selected_number == 1:
-                    # MovieList 클래스의 인스턴스를 생성하고 display_movie_list 메서드 호출
-                    from movie.MovieList import display_movies_list
-                    from movie.MovieInfo import display_movie_details
-                    selected_movie_id = display_movies_list()
-                    if selected_movie_id is not None:
-                        display_movie_details(self._userId,selected_movie_id)
-                elif selected_number == 2:
-                    from search.Search import display_search_page
-                    display_search_page(self._userId)
-                elif selected_number == 3:
-                    from mypage.MyPage import display_my_page
-                    display_my_page(self._userId)
-                else:
-                   print("잘못된 입력입니다. 메뉴 번호를 입력해주세요.")
+                else :
+                    return selected_number
                     
             except ValueError as e:
                 print(f"\n오류: {str(e)}")
