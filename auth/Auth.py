@@ -1,5 +1,4 @@
 import os
-from home.Home import Home 
 
 def initialize_data_directory():
     """
@@ -167,8 +166,7 @@ def display_auth_menu():
             elif selected_number == 1:
                 sign_up()
             elif selected_number == 2:
-                user_id = login()  # 로그인 수행
-                return user_id # while 문을 빠져나감
+                return login()
             else:
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
 
@@ -251,10 +249,5 @@ def sign_up():
             continue
             
         break
-
-    save_user_data(user_id, password)
-    home_instance = Home()  # Home 클래스의 인스턴스 생성
-    user_id = login()  # 로그인 수행
-    home_instance.setUserId(user_id)  # 사용자 ID 설정
-    home_instance.home()  # 홈 메뉴 로직 실행
-    return  # 함수 종료
+    
+    login()
