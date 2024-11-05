@@ -1,5 +1,6 @@
 # 영화 리스트 프롬프트
 from MovieDTO import MovieData
+from movie.MovieInfo import display_movie_details
 
 
 def get_movies():
@@ -98,7 +99,7 @@ def paginate_movies(movies, page, page_size=10):
     return movies[start_index:end_index]
 
 
-def display_movies_list():
+def display_movies_list(user_id):
     while True:
         # 사용자에게 장르 선택을 요청
         selected_genre = choose_genre()
@@ -151,7 +152,9 @@ def display_movies_list():
             elif action.isdigit() and 1 <= int(action) <= len(current_page_movies):
                 movie_index = int(action) - 1
                 selected_movie = current_page_movies[movie_index]
-                return selected_movie["id"]
+                movie_id = selected_movie["id"]
+                display_movie_details(user_id, movie_id)
+                show_movie_list(selected_genre, page, current_page_movies)
             else:
                 print("존재하지 않는 영화 번호입니다." if action.isdigit() else "숫자만 입력하세요.")
 
