@@ -1,4 +1,3 @@
-from movie.MovieList import get_movies
 from MovieDTO import MovieData
 
 
@@ -19,7 +18,16 @@ def load_user_data(user_id):
     return None  # 사용자 정보가 파일에 없을 경우 None 반환
 
 
-def display_movie_details(id,movie_id):
+def get_movies():
+    movie_data = MovieData()
+    if movie_data.load_movie_data():
+        return movie_data.movies
+    else:
+        print("영화 데이터를 불러오는 데 실패했습니다.")
+        return {}
+
+
+def display_movie_details(id, movie_id):
     # 사용자 정보 로드
     user_id = id
     user_info = load_user_data(user_id)
@@ -95,7 +103,6 @@ def rate_movie(movie, user_info, movie_id):
         if int(rating_input) == 0:
             return
         rating_input = float(rating_input)  # 입력받은 평점을 float 형으로 변환
-
 
         # 평점 계산 및 저장
         current_rating = movie['rating']
