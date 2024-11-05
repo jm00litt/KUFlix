@@ -28,6 +28,7 @@ def display_movie_details(user_id, movie_id):
             print("해당 ID의 영화가 존재하지 않습니다.")
             return
         while True:
+            user_info = load_user_data(user_id)
             favorited_status = "♥︎" if movie_id in user_info["favorited_movies"] else "♡"
             print(f"============================================")
             print(f"[영화 세부 정보]")
