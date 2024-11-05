@@ -16,7 +16,7 @@ def main():
         while True:
             selected_number = home()
             if selected_number == 0:
-                print('프로그램을 종료합니다.')
+                print('서비스를 종료합니다.')
                 exit(0)
             elif selected_number == 1:
                 # MovieList 클래스의 인스턴스를 생성하고 display_movie_list 메서드 호출

@@ -75,7 +75,6 @@ def display_search_page(user_id):
                     else:
                         current_page += 1
                 elif user_input == "0":
-                    print("\n홈 화면으로 돌아갑니다.")
                     print("=" * 40)
                     break
                 else:
