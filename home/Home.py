@@ -15,28 +15,32 @@ def home():
     홈 화면의 메인 로직을 처리합니다.
     사용자의 입력을 받아 해당하는 메뉴로 이동합니다.
     """
+    display_menu()
+    
     while True:
-        display_menu()
-
         try:
             selected_number = input("선택할 메뉴 번호를 입력하세요(0-3): ")
 
             # 입력값 검증
             if not selected_number.isdigit():
                 print("숫자만 입력하세요.")
+                selected_number = input("선택할 메뉴 번호를 입력하세요(0-3): ")
                 continue
 
             selected_number = int(selected_number)
 
             if selected_number not in range(0, 4):
                 print("존재하지 않는 메뉴 번호입니다.")
+                selected_number = input("선택할 메뉴 번호를 입력하세요(0-3): ")
                 continue
             else:
                 return selected_number
 
         except ValueError as e:
             print(f"\n오류: {str(e)}")
+            selected_number = input("선택할 메뉴 번호를 입력하세요(0-3): ")
             continue
         except Exception as e:
             print(f"\n오류가 발생했습니다: {str(e)}")
+            selected_number = input("선택할 메뉴 번호를 입력하세요(0-3): ")
             continue
