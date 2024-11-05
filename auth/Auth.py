@@ -223,10 +223,11 @@ def sign_up():
         if not user_id:
             print('아이디를 입력해주세요.\n')
             continue
-            
-        if not user_id.isalnum():
+
+        if not all(c.islower() or c.isdigit() for c in user_id):
             print('소문자 영어와 숫자의 조합으로 이루어져야 합니다.')
             continue
+        
             
         if is_id_exist(user_id):
             print('이미 존재하는 아이디입니다.\n')
