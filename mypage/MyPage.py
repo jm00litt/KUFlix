@@ -73,7 +73,7 @@ def display_my_favorite(user_id):
         print("=" * 40)
         print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
 
-        user_input = input("상세정보를 조회할 영화 번호를 입력하세요:").strip()
+        user_input = input("상세정보를 조회할 영화 번호를 입력하세요: ").strip()
 
         # 사용자 입력에 따른 페이지 전환 또는 영화 상세 정보 조회
         if user_input == "-":
