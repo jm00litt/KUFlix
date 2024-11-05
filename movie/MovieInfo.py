@@ -28,6 +28,7 @@ def display_movie_details(user_id, movie_id):
             print("해당 ID의 영화가 존재하지 않습니다.")
             return
         while True:
+            user_info = load_user_data(user_id)
             favorited_status = "♥︎" if movie_id in user_info["favorited_movies"] else "♡"
             print(f"============================================")
             print(f"[영화 세부 정보]")
@@ -83,10 +84,15 @@ def rate_movie(user_id, movie_id):
     print("\n평점을 남겨주세요!")
     print("[1] ⭐️ [2] ⭐️⭐️ [3] ⭐️⭐️⭐️ [4] ⭐️⭐️⭐️⭐️ [5] ⭐️⭐️⭐️⭐️⭐️ [0] 뒤로가기")
     rating_input = input("번호를 입력하세요(0-5): ")
+    if not rating_input.isdigit():
+        print("숫자만 입력 가능합니다.")
+        rate_movie(user_id, movie_id)
+    if int(rating_input) < 0 or int(rating_input) > 5:
+        print("존재하지 않는 번호 입니다.")
+        rate_movie(user_id, movie_id)
     if rating_input.isdigit() and 0 <= int(rating_input) <= 5:
         if int(rating_input) == 0:
             return
-        
         rating_input = float(rating_input)
         current_rating = movie['rating']
         current_count = movie['rating_count']
