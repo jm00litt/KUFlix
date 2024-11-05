@@ -149,13 +149,18 @@ def display_movies_list(user_id):
                 else:
                     print("첫 번째 페이지입니다.")
             elif action.isdigit() and 1 <= int(action) <= len(current_page_movies):
-                movie_index = int(action) - 1
-                selected_movie = current_page_movies[movie_index]
-                movie_id = selected_movie["id"]
+                movie_id = get_movies_info(action, current_page_movies)
                 display_movie_details(user_id, movie_id)
                 show_movie_list(selected_genre, page, current_page_movies)
             else:
                 print("존재하지 않는 영화 번호입니다." if action.isdigit() else "숫자만 입력하세요.")
+
+
+def get_movies_info(action, current_page_movies):
+    movie_index = int(action) - 1
+    selected_movie = current_page_movies[movie_index]
+    movie_id = selected_movie["id"]
+    return movie_id
 
 
 def show_movie_list(selected_genre, page, current_page_movies):
