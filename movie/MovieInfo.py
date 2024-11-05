@@ -87,7 +87,7 @@ def rate_movie(user_id, movie_id):
     print("\n평점을 남겨주세요!")
     while True:
         print("[1] ⭐️ [2] ⭐️⭐️ [3] ⭐️⭐️⭐️ [4] ⭐️⭐️⭐️⭐️ [5] ⭐️⭐️⭐️⭐️⭐️ [0] 뒤로가기")
-        rating_input = input("번호를 입력하세요(0-5): ")
+        rating_input = input("번호를 입력하세요(0-5): ").strip()
         if not rating_input.isdigit():
             print("숫자만 입력 가능합니다.")
             continue
