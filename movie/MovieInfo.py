@@ -55,20 +55,20 @@ def display_movie_details(user_id, movie_id):
 def choose_status(user_id, movie_id):
     valid_input = False
     while not valid_input:
-        user_input = input("번호를 입력하세요(0-2): ")
-        if user_input.isdigit() and int(user_input) in [0, 1, 2]:
+        choice = input("번호를 입력하세요(0-2): ")
+        if choice.isdigit() and int(choice) in [0, 1, 2]:
             valid_input = True
-        elif not user_input.isdigit():
+        elif not choice.isdigit():
             print("숫자만 입력하세요.")
         else:
             print("존재하지 않는 메뉴 번호입니다.")
 
-    user_input = int(user_input)
-    if user_input == 1:
+    choice = int(choice)
+    if choice == 1:
         like_movie(user_id, movie_id)
-    elif user_input == 2:
+    elif choice == 2:
         rate_movie(user_id, movie_id)
-    elif user_input == 0:
+    elif choice == 0:
         return False
     return True
 
