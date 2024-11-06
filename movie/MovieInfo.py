@@ -55,7 +55,7 @@ def display_movie_details(user_id, movie_id):
 def choose_status(user_id, movie_id):
     valid_input = False
     while not valid_input:
-        choice = input("번호를 입력하세요(0-2): ")
+        choice = input("번호를 입력하세요(0-2): ").strip()
         if choice.isdigit() and int(choice) in [0, 1, 2]:
             valid_input = True
         elif not choice.isdigit():
