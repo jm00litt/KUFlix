@@ -157,7 +157,7 @@ def save_user_data(user_info):
 def save_movie_data(movie_id, updated_movie):
     movies = get_movies()
     movies[movie_id] = updated_movie
-    with open("movie.txt", "w", encoding="utf-8") as file:
+    with open("data/movie.txt", "w", encoding="utf-8", newline="") as file:
         for id, data in movies.items():
             line = f"{id}/{data['title']}/{data['year']}/{data['director']}/" \
                    f"{data['genre']}/{data['runtime']}/{data['views']}/" \

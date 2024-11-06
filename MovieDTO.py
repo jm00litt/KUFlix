@@ -7,20 +7,20 @@ class MovieData:
 
     @classmethod
     def check_file(cls):
-        file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
+        file_path = os.path.join(os.path.dirname(__file__), "data/movie.txt")
         # print(os.getcwd())
         if not os.path.exists(file_path):
-            with open(file_path, 'w') as file:
+            with open(file_path, 'w', newline='') as file:
                 file.write("")  # 빈 파일로 생성
             print("movie.txt 파일이 존재하지 않아 생성합니다.")
 
     @classmethod
     def load_movie_data(cls):
-        file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
+        file_path = os.path.join(os.path.dirname(__file__), "data/movie.txt")
 
         seen_ids = set()  # 영화 아이디를 저장할 집합 (중복 검사)
 
-        with open(file_path, 'r', encoding='utf-8') as file:
+        with open(file_path, 'r', encoding='utf-8', newline='') as file:
             for line in file:
                 # 줄 끝의 공백 제거 및 슬래시로 분리
                 line = line.strip()
@@ -119,9 +119,9 @@ class MovieData:
 
     @classmethod
     def update_movie_file(cls):
-        file_path = os.path.join(os.path.dirname(__file__), "movie.txt")
+        file_path = os.path.join(os.path.dirname(__file__), "data/movie.txt")
 
-        with open(file_path, 'w', encoding='utf-8') as file:
+        with open(file_path, 'w', encoding='utf-8', newline='') as file:
             for movie_id, data in cls.movies.items():
                 # 각 영화 정보를 슬래시로 구분하여 저장
                 line = f"{movie_id}/{data['title']}/{data['year']}/{data['director']}/" \
