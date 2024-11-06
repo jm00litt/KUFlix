@@ -182,6 +182,6 @@ def show_movie_list(selected_genre, page, current_page_movies):
     print(f"({page}페이지)")
 
     for i, movie in enumerate(current_page_movies, start=1):
-        print(f"[{i}] {movie['title']} (평점: {movie['rating']} / 평가 인원 수: {movie['rating_count']})")
+        print(f"[{i}] {movie['title']} (감독명: {movie['director']} / 평점: {movie['rating']} / 평가 인원 수: {movie['rating_count']})")
     print("=" * 44)
     print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
