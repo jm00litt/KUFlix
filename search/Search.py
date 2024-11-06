@@ -49,9 +49,10 @@ def display_search_page(user_id):
                 for i in range(start_index, end_index):
                     movie_id = searched_list[i]
                     title = MovieData.movies[movie_id]["title"]
+                    director = MovieData.movies[movie_id]["director"]
                     rating = MovieData.movies[movie_id]["rating"]
                     rating_count = MovieData.movies[movie_id]["rating_count"]
-                    print(f"[{i - start_index + 1}] {title} (평점: {rating} / 평가 인원 수: {rating_count}명)")
+                    print(f"[{i - start_index + 1}] {title} (감독명 : {director} / 평점: {rating} / 평가 인원 수: {rating_count}명)")
 
                 print("=" * 40)
                 print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
