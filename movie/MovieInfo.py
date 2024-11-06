@@ -42,6 +42,7 @@ def display_movie_details(user_id, movie_id):
             print(f"장르: {movie['genre']}")
             print(f"러닝타임: {movie['runtime']}분")
             print(f"평점: {movie['rating']}")
+            print(f"인원수 : {movie['rating_count']}")
             print(f"조회수: {movie['views']}")
             print(f"찜: {favorited_status}")
             print("============================================")
