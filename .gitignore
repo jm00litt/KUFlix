@@ -6,4 +6,4 @@ user.txt
 .DS_Store
 venv/
 *.env
-movie.txt
+data/movie.txt
