@@ -53,6 +53,10 @@ def display_my_favorite(user_id):
 
         fravorite_list = load_user_data(user_id)["favorited_movies"]
 
+        if len(fravorite_list) == 0:
+            print("찜한 영화가 없습니다!")
+            return
+
         # 총 페이지 수 계산
         pages = (len(fravorite_list) - 1) // 10 + 1
         print("=" * 40)
