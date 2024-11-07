@@ -163,6 +163,10 @@ def display_auth_menu():
         try:
             selected_number = input("선택하실 메뉴 번호를 입력하세요 (0-2): ").strip()
 
+            if selected_number != selected_number.lstrip('0') and selected_number != '0':
+                print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
+                continue
+
             if selected_number == "0":
                 print("[회원가입·로그인 서비스] ")
                 print("\n" + "=" * 50)
@@ -173,6 +177,13 @@ def display_auth_menu():
                 print("[0] 종료하기")
                 print("=" * 50)
                 selected_number = input("선택하실 메뉴 번호를 입력하세요 (0-2): ").strip()
+
+                if selected_number != selected_number.lstrip('0') and selected_number != '0':
+                    print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
+                    continue
+
+               
+
                 if selected_number == "0":
                     print("\n서비스를 종료합니다.")
                     exit(0)
