@@ -18,7 +18,11 @@ def home():
     
     while True:
         selected_number = input("선택할 메뉴 번호를 입력하세요(0-3): ").strip()
-        
+
+        if selected_number != selected_number.lstrip('0') and selected_number != '0':
+            print("존재하지 않는 메뉴 번호입니다.")
+            continue
+    
         # 숫자가 아닌 입력 처리
         if not selected_number.isdigit():
             print("숫자만 입력하세요.")

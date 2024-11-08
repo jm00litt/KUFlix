@@ -22,6 +22,10 @@ def display_my_page(user_id):
             print("숫자만 입력하세요.")
             continue
 
+        if user_selection != user_selection.lstrip('0') and user_selection != '0':
+            print("존재하지 않는 메뉴 번호입니다.")
+            continue
+
         user_selection = int(user_selection)
 
         if user_selection == 0:
