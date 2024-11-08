@@ -55,7 +55,7 @@ def display_movie_details(user_id, movie_id):
 def choose_status(user_id, movie_id):
     valid_input = False
     while not valid_input:
-        choice = input("번호를 입력하세요(0-2): ")
+        choice = input("번호를 입력하세요(0-2): ").strip()
         if choice.isdigit() and int(choice) in [0, 1, 2]:
             valid_input = True
         elif not choice.isdigit():
@@ -157,7 +157,7 @@ def save_user_data(user_info):
 def save_movie_data(movie_id, updated_movie):
     movies = get_movies()
     movies[movie_id] = updated_movie
-    with open("movie.txt", "w", encoding="utf-8") as file:
+    with open("data/movie.txt", "w", encoding="utf-8", newline="") as file:
         for id, data in movies.items():
             line = f"{id}/{data['title']}/{data['year']}/{data['director']}/" \
                    f"{data['genre']}/{data['runtime']}/{data['views']}/" \
