@@ -83,6 +83,8 @@ def choose_genre():
 
     while True:
         choice = input("정렬 옵션을 선택하세요(0-6): ").strip()
+
+
         if choice in genre_map:
             if choice == "0":
                 return None

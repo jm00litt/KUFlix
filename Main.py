@@ -15,6 +15,8 @@ def main():
 
         while True:
             selected_number = home()
+
+
             if selected_number == 0:
                 print('서비스를 종료합니다.')
                 exit(0)
