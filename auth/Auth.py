@@ -167,26 +167,10 @@ def display_auth_menu():
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
                 continue
 
+            # 초기 메뉴에서의 0 입력 처리 - 즉시 종료
             if selected_number == "0":
-                print("[회원가입·로그인 서비스] ")
-                print("\n" + "=" * 50)
-                print("회원가입 또는 로그인을 해주세요")
-                print("=" * 50)
-                print("[1] 회원가입 서비스")
-                print("[2] 로그인 서비스")
-                print("[0] 종료하기")
-                print("=" * 50)
-                selected_number = input("선택하실 메뉴 번호를 입력하세요 (0-2): ").strip()
-
-                if selected_number != selected_number.lstrip('0') and selected_number != '0':
-                    print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
-                    continue
-
-               
-
-                if selected_number == "0":
-                    print("\n서비스를 종료합니다.")
-                    exit(0)
+                print("\n서비스를 종료합니다.")
+                exit(0)
 
             if not selected_number.isdigit():
                 print("잘못된 입력입니다. 다시 번호를 입력해주세요. (0-2)")
@@ -207,7 +191,7 @@ def display_auth_menu():
                 print("=" * 50)
                 continue
             elif selected_number == 2:
-                result = login()
+                result = login() 
                 if result:
                     return result
                 print("[회원가입·로그인 서비스] ")
