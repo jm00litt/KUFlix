@@ -45,14 +45,16 @@ def display_search_page(user_id):
                 start_index = (current_page - 1) * 10
                 end_index = min(start_index + 10, len(searched_list))
 
+                rated_movies = load_user_data(user_id)["rated_movies"]
                 # 영화 제목을 출력
                 for i in range(start_index, end_index):
                     movie_id = searched_list[i]
+                    rated_indicator = "✅" if movie_id in rated_movies else "☑️"
                     title = MovieData.movies[movie_id]["title"]
                     director = MovieData.movies[movie_id]["director"]
                     rating = MovieData.movies[movie_id]["rating"]
                     rating_count = MovieData.movies[movie_id]["rating_count"]
-                    print(f"[{i - start_index + 1}] {title} (감독명 : {director} / 평점: {rating} / 평가 인원 수: {rating_count}명)")
+                    print(f"[{i - start_index + 1}] {title} (감독명: {director} / 평점: {rating} / 평가 인원 수: {rating_count}) {rated_indicator}")
 
                 print("=" * 40)
                 print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
