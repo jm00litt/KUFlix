@@ -1,6 +1,6 @@
 # 영화 리스트 프롬프트
 from MovieDTO import MovieData
-from movie.MovieInfo import display_movie_details
+from movie.MovieInfo import display_movie_details, load_user_data
 
 
 def get_movies():
@@ -130,7 +130,7 @@ def display_movies_list(user_id):
 
         page = 1
         current_page_movies = paginate_movies(filtered_movies, page)
-        show_movie_list(selected_genre, page, current_page_movies)
+        show_movie_list(selected_genre, page, current_page_movies, user_id)
 
         while True:
             action = input("상세정보를 조회할 영화 번호를 입력하세요: ").strip()
@@ -141,14 +141,14 @@ def display_movies_list(user_id):
                 if (page * 10) < len(filtered_movies):
                     page += 1
                     current_page_movies = paginate_movies(filtered_movies, page)
-                    show_movie_list(selected_genre, page, current_page_movies)
+                    show_movie_list(selected_genre, page, current_page_movies, user_id)
                 else:
                     print("마지막 페이지입니다.")
             elif action == "-":
                 if page > 1:
                     page -= 1
                     current_page_movies = paginate_movies(filtered_movies, page)
-                    show_movie_list(selected_genre, page, current_page_movies)
+                    show_movie_list(selected_genre, page, current_page_movies, user_id)
                 else:
                     print("첫 번째 페이지입니다.")
             elif action.isdigit() and action == action.lstrip('0'):
@@ -171,7 +171,7 @@ def display_movies_list(user_id):
                         ]
 
                     current_page_movies = paginate_movies(filtered_movies, page)
-                    show_movie_list(selected_genre, page, current_page_movies)
+                    show_movie_list(selected_genre, page, current_page_movies, user_id)
                 else:
                     print("존재하지 않는 영화 번호입니다.")
             else:
@@ -185,13 +185,15 @@ def get_movies_info(action, current_page_movies):
     return movie_id
 
 
-def show_movie_list(selected_genre, page, current_page_movies):
+def show_movie_list(selected_genre, page, current_page_movies, user_id):
     print("=" * 44)
     print(f"[리스트] ({selected_genre})")
     print("=" * 44)
     print(f"({page}페이지)")
-
+    rated_movies = load_user_data(user_id)["rated_movies"]
     for i, movie in enumerate(current_page_movies, start=1):
-        print(f"[{i}] {movie['title']} (감독명: {movie['director']} / 평점: {movie['rating']} / 평가 인원 수: {movie['rating_count']})")
+        movie_id = movie["id"]
+        rated_indicator = "✅" if movie_id in rated_movies else "☑️"
+        print(f"[{i}] {movie['title']} (감독명: {movie['director']} / 평점: {movie['rating']} / 평가 인원 수: {movie['rating_count']}) {rated_indicator}")
     print("=" * 44)
     print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
