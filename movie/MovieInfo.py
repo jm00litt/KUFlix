@@ -31,6 +31,7 @@ def display_movie_details(user_id, movie_id):
             user_info = load_user_data(user_id)  # 사용자 정보 갱신
             movies = get_movies()  # 영화 정보 갱신
             movie = movies.get(movie_id)  # 수정된 영화 정보 로드
+            genres_str = ','.join(movie['genre']) # 장르 리스트를 쉼표로 연결
             
             favorited_status = "♥︎" if movie_id in user_info["favorited_movies"] else "♡"
             print(f"============================================")
@@ -39,7 +40,7 @@ def display_movie_details(user_id, movie_id):
             print(f"<{movie['title']}>")
             print(f"개봉년도: {movie['year']}년")
             print(f"영화 감독: {movie['director']}")
-            print(f"장르: {movie['genre']}")
+            print(f"장르: {genres_str}")
             print(f"러닝타임: {movie['runtime']}분")
             print(f"평점: {movie['rating']}")
             print(f"인원수 : {movie['rating_count']}")
