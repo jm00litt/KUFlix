@@ -31,7 +31,7 @@ class MovieData:
                     return False
 
                 # movie_id를 정수형으로 변환
-                movie_id_str, title, year, director, genre, runtime, views, rating, rating_count = elements
+                movie_id_str, title, year, director, genres, runtime, views, rating, rating_count = elements
                 movie_id = int(movie_id_str)  # movie_id를 정수형으로 변환
 
                 # 중복 아이디 검증
@@ -40,8 +40,10 @@ class MovieData:
                     return False
                 seen_ids.add(movie_id)  # 아이디를 집합에 추가
 
+                genre_list = [genre.strip() for genre in genres.split(',')]
+
                 # 문법 형식 검사
-                if not cls.validate_movie_data(movie_id_str, title, year, director, genre, runtime, views, rating, rating_count):
+                if not cls.validate_movie_data(movie_id_str, title, year, director, genre_list, runtime, views, rating, rating_count):
                     return False
 
                 # 딕셔너리에 영화 데이터 추가
@@ -49,7 +51,7 @@ class MovieData:
                     "title": title,
                     "year": int(year),  # release_year를 year로 변경
                     "director": director,
-                    "genre": genre,
+                    "genre": genre_list, # 장르를 리스트로 저장
                     "runtime": int(runtime),
                     "views": int(views),
                     "rating": float(rating),
@@ -60,7 +62,7 @@ class MovieData:
 
     # 문법 형식 검사
     @classmethod
-    def validate_movie_data(cls, movie_id, title, year, director, genre, runtime, views, rating, rating_count):
+    def validate_movie_data(cls, movie_id, title, year, director, genre_list, runtime, views, rating, rating_count):
         # 영화 아이디: 중복되지 않으며 0 이상의 정수
         if not (movie_id.isdigit() and int(movie_id) >= 0):
             print(f"영화 아이디 형식 오류: {movie_id}")
@@ -83,8 +85,8 @@ class MovieData:
 
         # 장르: 허용된 장르 중 하나
         valid_genres = ['액션', '코미디', '로맨스', '호러', 'SF']
-        if genre.strip() not in valid_genres:
-            print(f"장르 형식 오류: {genre}")
+        if not all (genre in valid_genres for genre in genre_list):
+            print(f"장르 형식 오류: {genre_list}")
             return False
 
         # 러닝타임: 1 이상의 숫자
@@ -123,8 +125,10 @@ class MovieData:
 
         with open(file_path, 'w', encoding='utf-8', newline='') as file:
             for movie_id, data in cls.movies.items():
+                # 장르 리스트를 쉼표로 연결
+                genres_str = ','.join(data['genre'])
                 # 각 영화 정보를 슬래시로 구분하여 저장
                 line = f"{movie_id}/{data['title']}/{data['year']}/{data['director']}/" \
-                       f"{data['genre']}/{data['runtime']}/{data['views']}/" \
+                       f"{genres_str}/{data['runtime']}/{data['views']}/" \
                        f"{data['rating']}/{data['rating_count']}\n"
                 file.write(line)

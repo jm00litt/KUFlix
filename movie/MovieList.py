@@ -107,75 +107,66 @@ def display_movies_list(user_id):
         selected_genre = choose_genre()
 
         if selected_genre is None:  # 뒤로 가기 선택한 경우
-            return
+            return # 메뉴로 돌아가기
+        
+        page = 1 # 페이지 초기화
+        
+        while True: # 내부 루프에서 리스트와 페이지를 반복 처리
 
-        # 전체 영화 데이터를 불러온 후, 선택한 장르로 필터링
-        movies = get_movies()
+            # 전체 영화 데이터를 불러온 후, 선택한 장르로 필터링
+            movies = get_movies()
 
-        if selected_genre == "조회수":
-            # 조회수 순으로 정렬
-            filtered_movies = sorted(
-                [{"id": movie_id, **movie} for movie_id, movie in movies.items()],
-                key=lambda x: x["views"],
-                reverse=True
-            )
-        else:
-            # 선택된 장르로 필터링
-            filtered_movies = [{"id": movie_id, **movie} for movie_id, movie in movies.items() if
-                               movie["genre"] == selected_genre]
-
-        if not filtered_movies:
-            print(f"선택한 장르 '{selected_genre}'에 영화가 없습니다. 다른 장르를 선택해 주세요.")
-            continue
-
-        page = 1
-        current_page_movies = paginate_movies(filtered_movies, page)
-        show_movie_list(selected_genre, page, current_page_movies, user_id)
-
-        while True:
-            action = input("상세정보를 조회할 영화 번호를 입력하세요: ").strip()
-
-            if action == "0":
-                break  # 뒤로 가기
-            elif action == "+":
-                if (page * 10) < len(filtered_movies):
-                    page += 1
-                    current_page_movies = paginate_movies(filtered_movies, page)
-                    show_movie_list(selected_genre, page, current_page_movies, user_id)
-                else:
-                    print("마지막 페이지입니다.")
-            elif action == "-":
-                if page > 1:
-                    page -= 1
-                    current_page_movies = paginate_movies(filtered_movies, page)
-                    show_movie_list(selected_genre, page, current_page_movies, user_id)
-                else:
-                    print("첫 번째 페이지입니다.")
-            elif action.isdigit() and action == action.lstrip('0'):
-                int_action = int(action)
-                if 1 <= int_action <= len(current_page_movies):
-                    movie_id = get_movies_info(int_action, current_page_movies)
-                    display_movie_details(user_id, movie_id)
-
-                    movies = get_movies()
-                    if selected_genre == "조회수":
-                        filtered_movies = sorted(
-                            [{"id": movie_id, **movie} for movie_id, movie in movies.items()],
-                            key=lambda x: x["views"],
-                            reverse=True
-                        )
-                    else:
-                        filtered_movies = [
-                            {"id": movie_id, **movie} for movie_id, movie in movies.items()
-                            if movie["genre"] == selected_genre
-                        ]
-
-                    current_page_movies = paginate_movies(filtered_movies, page)
-                    show_movie_list(selected_genre, page, current_page_movies, user_id)
-                else:
-                    print("존재하지 않는 영화 번호입니다.")
+            if selected_genre == "조회수":
+                # 조회수 순으로 정렬
+                filtered_movies = sorted(
+                    [{"id": movie_id, **movie} for movie_id, movie in movies.items()],
+                    key=lambda x: x["views"],
+                    reverse=True
+                )
             else:
-                print("숫자만 입력하세요.")
+                # 선택된 장르가 영화의 장르 리스트에 포함된 경우 필터링
+                filtered_movies = [
+                    {"id": movie_id, **movie} 
+                    for movie_id, movie in movies.items() 
+                    if selected_genre in movie["genre"]
+                ]
+
+            if not filtered_movies:
+                print(f"선택한 장르 '{selected_genre}'에 영화가 없습니다. 다른 장르를 선택해 주세요.")
+                break # 장르 선택으로 돌아가기
+
+            
+            while True:
+                current_page_movies = paginate_movies(filtered_movies, page)
+                show_movie_list(selected_genre, page, current_page_movies, user_id)
+
+                action = input("상세정보를 조회할 영화 번호를 입력하세요: ").strip()
+
+                if action == "0":
+                    break  # 장르 선택으로 돌아가기
+                elif action == "+":
+                    if (page * 10) < len(filtered_movies):
+                        page += 1
+                    else:
+                        print("마지막 페이지입니다.")
+                elif action == "-":
+                    if page > 1:
+                        page -= 1
+                    else:
+                        print("첫 번째 페이지입니다.")
+                elif action.isdigit() and action == action.lstrip('0'):
+                    int_action = int(action)
+
+                    if 1 <= int_action <= len(current_page_movies):
+                        movie_id = get_movies_info(int_action, current_page_movies)
+                        display_movie_details(user_id, movie_id)
+
+                    else:
+                        print("존재하지 않는 영화 번호입니다.")
+                else:
+                    print("숫자만 입력하세요.")
+
+            break    # 페이지 루프 종료, 장르 선택으로 돌아가기
 
 
 def get_movies_info(action, current_page_movies):
