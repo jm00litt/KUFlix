@@ -120,6 +120,7 @@ def rate_movie(user_id, movie_id):
     print(f"평점이 {rating_input}점으로 등록되었습니다!\n")
     save_user_data(user_info)
     save_movie_data(movie_id, movie)
+    
 def load_user_data(user_id):
     with open("./data/user.txt", "r") as file:
         for line in file:
@@ -160,7 +161,10 @@ def save_movie_data(movie_id, updated_movie):
     movies[movie_id] = updated_movie
     with open("data/movie.txt", "w", encoding="utf-8", newline="") as file:
         for id, data in movies.items():
+            # 장르 리스트를 쉼표료 연결된 문자열로 반환
+            genres_str = ','.join(data['genre']) if isinstance(data['genre'], list) else data['genre']
+            # 각 영화 정보를 슬래시로 구분하여 저장
             line = f"{id}/{data['title']}/{data['year']}/{data['director']}/" \
-                   f"{data['genre']}/{data['runtime']}/{data['views']}/" \
+                   f"{genres_str}/{data['runtime']}/{data['views']}/" \
                    f"{data['rating']}/{data['rating_count']}\n"
             file.write(line)

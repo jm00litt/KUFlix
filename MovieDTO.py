@@ -39,6 +39,7 @@ class MovieData:
                     return False
                 seen_ids.add(movie_id)  # 아이디를 집합에 추가
 
+                # 장르를 쉼표로 구분된 문자열에서 리스트로 변환
                 genre_list = [genre.strip() for genre in genres.split(',')]
 
                 # 문법 형식 검사
@@ -82,9 +83,9 @@ class MovieData:
             print(f"감독명 형식 오류: {director}")
             return False
 
-        # 장르: 허용된 장르 중 하나
+        # 장르: 리스트여야 하며, 허용된 장르만 포함
         valid_genres = ['액션', '코미디', '로맨스', '호러', 'SF']
-        if not all (genre in valid_genres for genre in genre_list):
+        if not isinstance(genre_list, list) or not all (genre in valid_genres for genre in genre_list):
             print(f"장르 형식 오류: {genre_list}")
             return False
 
