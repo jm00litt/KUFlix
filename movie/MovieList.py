@@ -128,7 +128,7 @@ def display_movies_list(user_id):
                 filtered_movies = [
                     {"id": movie_id, **movie} 
                     for movie_id, movie in movies.items() 
-                    if selected_genre in movie["genre"]
+                    if selected_genre in movie['genre']
                 ]
 
             if not filtered_movies:
