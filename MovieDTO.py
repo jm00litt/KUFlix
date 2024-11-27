@@ -1,6 +1,5 @@
 import os
 
-
 class MovieData:
     # 클래스 변수로 movies 정의
     movies = {}  # 영화 정보를 저장할 딕셔너리
