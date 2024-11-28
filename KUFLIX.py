@@ -7,8 +7,14 @@ from mypage.MyPage import display_my_page
 
 
 def main():
-    MovieData.check_file()  # movie.txt 파일이 존재하는지 확인
-    MovieData.load_movie_data()
+    MovieData.check_file()  # director.txt 및 movie.txt 파일이 존재하는지 확인하고 없으면 생성
+    result = MovieData.load_director_data()
+    if not result:
+        return
+    result = MovieData.load_movie_data()
+    if not result:
+        return
+    print("감독 및 영화 데이터가 성공적으로 로드됨")
 
     while True:
         user_id = display_auth_menu()
