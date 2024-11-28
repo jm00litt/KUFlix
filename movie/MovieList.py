@@ -159,14 +159,30 @@ def display_movies_list(user_id):
 
                     if 1 <= int_action <= len(current_page_movies):
                         movie_id = get_movies_info(int_action, current_page_movies)
+                        # 상세정보 표시
                         display_movie_details(user_id, movie_id)
+
+                        # 영화 데이터 갱신 후 filtered_movies 재생성
+                        movies = get_movies()
+                        if selected_genre == "조회수" :
+                            filtered_movies = sorted(
+                                [{"id": movie_id, **movie} for movie_id, movie in movies.items()],
+                                key=lambda x: x["views"],
+                                reverse=True
+                            )
+                        else:
+                            filtered_movies = [
+                                {"id": movie_id, **movie}
+                                for movie_id, movie in movies.items()
+                                if selected_genre in movie['genre']
+                            ]
 
                     else:
                         print("존재하지 않는 영화 번호입니다.")
                 else:
                     print("숫자만 입력하세요.")
 
-            break    # 페이지 루프 종료, 장르 선택으로 돌아가기
+            break # 영화 리스트를 종료하고 장르 선택으로 돌아가기
 
 
 def get_movies_info(action, current_page_movies):
