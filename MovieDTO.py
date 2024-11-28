@@ -75,7 +75,7 @@ class MovieData:
                     return False
 
                 # 필드 변수 할당
-                movie_id_str, title, year, director_ids, genres, runtime, views, average_rating, rating_count, user_rating = elements
+                movie_id_str, title, year, director_ids, genres, runtime, views, average_rating, rating_count, user_ratings = elements
                 movie_id = int(movie_id_str)  # movie_id를 정수형으로 변환
 
                 # 중복된 영화 아이디가 있는지 확인
@@ -88,7 +88,7 @@ class MovieData:
                 genre_list = [genre.strip() for genre in genres.split(',')]
 
                 # 문법 형식 검사
-                if not cls.validate_movie_data(movie_id_str, title, year, director_ids, genre_list, runtime, views, average_rating, rating_count, user_rating):
+                if not cls.validate_movie_data(movie_id_str, title, year, director_ids, genre_list, runtime, views, average_rating, rating_count, user_ratings):
                     return False
                 
                 # director_ids에 따라 대응되는 감독명을 문자열로 저장
@@ -107,6 +107,9 @@ class MovieData:
                     else:
                         director_names.append(name)
 
+                # 10번째 필드(마지막 필드)를 ','를 기준으로 나누고 list로 저장
+                user_ratings_list = user_ratings.split(',')
+
                 # movies 딕셔너리에 출력 형태 저장
                 cls.movies[movie_id] = {
                     "title": title,
@@ -117,7 +120,7 @@ class MovieData:
                     "views": int(views),
                     "average_rating": float(average_rating),
                     "rating_count": int(rating_count),  # review_count를 rating_count로 변경
-                    "user_rating": user_rating
+                    "user_ratings": user_ratings_list   # 예) ["test123:4.0", "test456,2.5"]
                 }
         return True
 

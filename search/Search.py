@@ -14,13 +14,16 @@ def display_search_page(user_id):
 
     while True:
 
-        user_input = input("찾고자 하는 영화 제목을 입력하세요: ").strip()
+        user_input = input("찾고자 하는 영화 제목을 입력하세요(또는 '#<감독 아이디>'를 입력하여 해당 감독이 감독한 영화 목록을 확인하세요.): ").strip()
 
         if user_input == "0":
             break
         else:
             if len(user_input) == 0 or len(user_input) > 50:
                 print("잘못된 입력입니다. 최소 한 글자 이상, 최대 50자 이하로 입력해주세요.")
+                continue
+            elif (user_input[0] == '#'):
+                print("#으로 시작함. 여기 수정 예정.")
                 continue
 
             searched_list = search_movies(user_input)
@@ -51,10 +54,10 @@ def display_search_page(user_id):
                     movie_id = searched_list[i]
                     rated_indicator = "✅" if movie_id in rated_movies else "☑️"
                     title = MovieData.movies[movie_id]["title"]
-                    director = MovieData.movies[movie_id]["director"]
-                    rating = MovieData.movies[movie_id]["rating"]
+                    directors = MovieData.movies[movie_id]["directors"]
+                    average_rating = MovieData.movies[movie_id]["average_rating"]
                     rating_count = MovieData.movies[movie_id]["rating_count"]
-                    print(f"[{i - start_index + 1}] {title} (감독명: {director} / 평점: {rating} / 평가 인원 수: {rating_count}) {rated_indicator}")
+                    print(f"[{i - start_index + 1}] {title} (감독명: {directors} / 평점: {average_rating} / 평가 인원 수: {rating_count}) {rated_indicator}")
 
                 print("=" * 40)
                 print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
@@ -99,13 +102,18 @@ def search_movies(keyword):
     # keyword의 공백 제거 및 소문자 처리
     processed_keyword = keyword.replace(" ", "").lower()
 
-    for movie_id, movie_data in MovieData.movies.items():
-        # title과 director의 공백 제거 및 소문자 처리
-        processed_title = movie_data["title"].replace(" ", "").lower()
-        processed_director = movie_data["director"].replace(" ", "").lower()
+    # '#'으로 시작하는 검색인 경우 (감독 아이디를 통한 검색)
+    if (processed_keyword[0] == '#'):
+        input_id_str = processed_keyword[1:]
+        movie_data["director_ids"]
+    else:
+        for movie_id, movie_data in MovieData.movies.items():
+            # title과 director의 공백 제거 및 소문자 처리
+            processed_title = movie_data["title"].replace(" ", "").lower()
+            processed_directors = movie_data["directors"].replace(" ", "").lower()
 
-        # title이나 director 중 하나라도 keyword를 포함하면 추가
-        if processed_keyword in processed_title or processed_keyword in processed_director:
-            matched_movie_ids.append(movie_id)
+            # title이나 director 중 하나라도 keyword를 포함하면 추가
+            if processed_keyword in processed_title or processed_keyword in processed_directors:
+                matched_movie_ids.append(movie_id)
 
     return matched_movie_ids
