@@ -8,7 +8,7 @@ class MovieData:
     MOVIE_TXT = os.path.join(DATA_FILE, "movie.txt")
 
     # 클래스 변수로 movies 정의
-    directors = {}  # 외부에서 사용하지 않음 !!!
+    directors = {}  # ***!!! 외부에서 사용하지 마세요 !!!***
     movies = {}  # 영화 정보를 (프롬프트의 출력 형태로) 저장할 딕셔너리
 
     @classmethod
@@ -120,7 +120,8 @@ class MovieData:
                     "views": int(views),
                     "average_rating": float(average_rating),
                     "rating_count": int(rating_count),  # review_count를 rating_count로 변경
-                    "user_ratings": user_ratings_list   # 예) ["test123:4.0", "test456,2.5"]
+                    "user_ratings": user_ratings_list,  # 예) ["test123:4.0", "test456,2.5"]
+                    "director_ids": director_id_list   # ***!!! 외부에서 사용하지 마세요 !!!***
                 }
         return True
 
