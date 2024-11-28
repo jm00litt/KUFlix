@@ -201,6 +201,6 @@ def show_movie_list(selected_genre, page, current_page_movies, user_id):
     for i, movie in enumerate(current_page_movies, start=1):
         movie_id = movie["id"]
         rated_indicator = "✅" if movie_id in rated_movies else "☑️"
-        print(f"[{i}] {movie['title']} (감독명: {movie['director']} / 평점: {movie['rating']} / 평가 인원 수: {movie['rating_count']}) {rated_indicator}")
+        print(f"[{i}] {movie['title']} (감독명: {movie['directors']} / 평점: {movie['average_rating']} / 평가 인원 수: {movie['rating_count']}) {rated_indicator}")
     print("=" * 44)
     print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")

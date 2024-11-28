@@ -8,7 +8,7 @@ class MovieData:
     MOVIE_TXT = os.path.join(DATA_FILE, "movie.txt")
 
     # 클래스 변수로 movies 정의
-    directors = {}
+    directors = {}  # 외부에서 사용하지 않음 !!!
     movies = {}  # 영화 정보를 (프롬프트의 출력 형태로) 저장할 딕셔너리
 
     @classmethod
