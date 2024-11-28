@@ -76,10 +76,10 @@ def display_my_favorite(user_id):
             movie_id = fravorite_list[i]
             rated_indicator = "✅" if movie_id in rated_movies else "☑️"
             title = MovieData.movies[movie_id]["title"]
-            director = MovieData.movies[movie_id]["director"]
-            rating = MovieData.movies[movie_id]["rating"]
+            directors = MovieData.movies[movie_id]["directors"]
+            average_rating = MovieData.movies[movie_id]["average_rating"]
             rating_count = MovieData.movies[movie_id]["rating_count"]
-            print(f"[{i - start_index + 1}] {title} (감독명: {director} / 평점: {rating} / 평가 인원 수: {rating_count}) {rated_indicator}")
+            print(f"[{i - start_index + 1}] {title} (감독명: {directors} / 평점: {average_rating} / 평가 인원 수: {rating_count}) {rated_indicator}")
 
         print("=" * 40)
         print("이전 페이지: - / 다음 페이지: + / 뒤로가기: 0")
