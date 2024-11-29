@@ -1,4 +1,5 @@
 from MovieDTO import MovieData
+from auth.Auth import load_user_data as load
 
 def get_movies():
     movie_data = MovieData()
@@ -31,7 +32,6 @@ def display_movie_details(user_id, movie_id):
             user_info = load_user_data(user_id)  # 사용자 정보 갱신
             movies = get_movies()  # 영화 정보 갱신
             movie = movies.get(movie_id)  # 수정된 영화 정보 로드
-            genres_str = ','.join(movie['genre']) # 장르 리스트를 쉼표로 연결
             
             favorited_status = "♥︎" if movie_id in user_info["favorited_movies"] else "♡"
             print(f"============================================")
@@ -40,24 +40,99 @@ def display_movie_details(user_id, movie_id):
             print(f"<{movie['title']}>")
             print(f"개봉년도: {movie['year']}년")
             print(f"영화 감독: {movie['director']}")
-            print(f"장르: {genres_str}")
+            print(f"장르: {movie['genre']}")
             print(f"러닝타임: {movie['runtime']}분")
             print(f"평점: {movie['rating']}")
             print(f"인원수 : {movie['rating_count']}")
             print(f"조회수: {movie['views']}")
             print(f"찜: {favorited_status}")
             print("============================================")
-            print("찜하기/해제하기: 1 / 평점 남기기: 2 / 뒤로가기: 0")
+            print("찜하기/해제하기: 1 / 평점 남기기: 2 / 평점 남긴 유저 확인하기: 3 / 뒤로가기: 0")
             if not choose_status(user_id, movie_id):
                 break
     else:
         print("해당 ID의 영화가 존재하지 않습니다.")
 
+def show_rated_users(movie_id):
+    while True : 
+        print(f"============================================")
+        users = load()
+        user_ids = users.keys()
+        for i in user_ids :
+            user_data = load_user_data(i)
+            user_movies = user_data['rated_movies'].keys()
+            if movie_id in user_movies:
+                print(f'{user_data["rated_movies"][movie_id]} : {i}')
+        print("============================================")
+        print('유저 아이디 입력시 해당 유저의 <평점,영화> 리스트를 출력합니다.(뒤로가기는 0)\n')
+        valid_input = False
+        while not valid_input:
+            choice = input("아이디 또는 번호를 입력하세요(0): ")
+            if choice.isdigit() and int(choice) in [0]:
+                valid_input = True
+                return
+            elif choice in user_ids:
+                show_users_rate(choice)
+                break
+            else:
+                print("해당 아이디가 없거나 잘못된 번호입니다.")
+
+def show_users_rate(user_id):
+    print(f"============================================")
+    print(f'유저 아이디 : {user_id}')
+    rate_total_average = 0
+    rate_total_count = 0
+    rate_genre_average = {
+        "액션" : 0,
+        "코미디" : 0,
+        "로맨스" : 0,
+        "호러" : 0,
+        "SF" : 0}
+    rate_genre_count = {
+        "액션" : 0,
+        "코미디" : 0,
+        "로맨스" : 0,
+        "호러" : 0,
+        "SF" : 0
+        }
+    user_data = load_user_data(user_id)
+    for key in user_data['rated_movies'].keys():
+        movies = get_movies()
+        movie = movies.get(key)
+        print(f'<{movie["title"]}> : {user_data["rated_movies"][key]}')
+        print(f"개봉년도: {movie['year']}년")
+        print(f"장르: {movie['genre']}")
+        print(f"영화 감독: {movie['director']}")
+        print(f'영화 아이디 : {key}\n')
+        rate_total_count+=1
+        rate_genre_count[movie['genre']]+=1
+        rate_total_average+=float(user_data["rated_movies"][key])
+        rate_genre_average[movie['genre']] +=float(user_data["rated_movies"][key])
+    if(rate_total_count == 0):
+        print(f'전체 평점 평균 : -')
+    else : 
+        print(f'전체 평점 평균 : {round(rate_total_average/rate_total_count,1)}')
+    print(f'장르별 평점 평균 :')
+    for genre in rate_genre_count.keys():
+        if(rate_genre_count[genre] == 0):
+            print(f'{genre} : -')
+        else :
+            print(f'{genre} : {round(rate_genre_average[genre]/rate_genre_count[genre],1)}')
+    print(f"============================================")
+    while True :
+        print('뒤로가기 : 0')
+        zero = input('번호를 입력하세요 : ')
+        if zero == '0':
+            return
+        else :
+            print('잘못된 입력입니다.')
+    
+
 def choose_status(user_id, movie_id):
     valid_input = False
     while not valid_input:
-        choice = input("번호를 입력하세요(0-2): ").strip()
-        if choice.isdigit() and int(choice) in [0, 1, 2]:
+        choice = input("번호를 입력하세요(0-2): ")
+        if choice.isdigit() and int(choice) in [0, 1, 2, 3]:
             valid_input = True
         elif not choice.isdigit():
             print("숫자만 입력하세요.")
@@ -69,6 +144,8 @@ def choose_status(user_id, movie_id):
         like_movie(user_id, movie_id)
     elif choice == 2:
         rate_movie(user_id, movie_id)
+    elif choice == 3:
+        show_rated_users(movie_id)
     elif choice == 0:
         return False
     return True
@@ -120,7 +197,6 @@ def rate_movie(user_id, movie_id):
     print(f"평점이 {rating_input}점으로 등록되었습니다!\n")
     save_user_data(user_info)
     save_movie_data(movie_id, movie)
-    
 def load_user_data(user_id):
     with open("./data/user.txt", "r") as file:
         for line in file:
@@ -159,12 +235,9 @@ def save_user_data(user_info):
 def save_movie_data(movie_id, updated_movie):
     movies = get_movies()
     movies[movie_id] = updated_movie
-    with open("data/movie.txt", "w", encoding="utf-8", newline="") as file:
+    with open("movie.txt", "w", encoding="utf-8") as file:
         for id, data in movies.items():
-            # 장르 리스트를 쉼표료 연결된 문자열로 반환
-            genres_str = ','.join(data['genre']) if isinstance(data['genre'], list) else data['genre']
-            # 각 영화 정보를 슬래시로 구분하여 저장
             line = f"{id}/{data['title']}/{data['year']}/{data['director']}/" \
-                   f"{genres_str}/{data['runtime']}/{data['views']}/" \
+                   f"{data['genre']}/{data['runtime']}/{data['views']}/" \
                    f"{data['rating']}/{data['rating_count']}\n"
             file.write(line)
