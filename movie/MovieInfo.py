@@ -39,10 +39,10 @@ def display_movie_details(user_id, movie_id):
             print(f"============================================")
             print(f"<{movie['title']}>")
             print(f"개봉년도: {movie['year']}년")
-            print(f"영화 감독: {movie['director']}")
+            print(f"영화 감독: {movie['directors']}")
             print(f"장르: {genres_str}")
             print(f"러닝타임: {movie['runtime']}분")
-            print(f"평점: {movie['rating']}")
+            print(f"평점: {movie['average_rating']}")
             print(f"인원수 : {movie['rating_count']}")
             print(f"조회수: {movie['views']}")
             print(f"찜: {favorited_status}")
@@ -95,31 +95,37 @@ def rate_movie(user_id, movie_id):
             continue
         rating_input = int(rating_input)
         if rating_input < 0 or rating_input > 5:
-            print("존재하지 않는 번호 입니다.")
+            print("존재하지 않는 번호입니다.")
             continue
         if rating_input == 0:
             return
-        break 
+        break
 
+    # 평점 계산 로직
     rating_input = float(rating_input)
-    current_rating = movie['rating']
+    current_rating = movie['average_rating']
     current_count = movie['rating_count']
-    
-    if current_count == 0 and rating_input > 0:
-        new_rating = rating_input
-        movie['rating_count'] = 1
-    elif movie_id in user_info["rated_movies"]:
-        previous_rating = user_info["rated_movies"][movie_id]
-        new_rating = ((current_rating * current_count) - previous_rating + rating_input) / current_count
-    else:
-        new_rating = ((current_rating * current_count) + rating_input) / (current_count + 1)
-        movie['rating_count'] += 1
 
-    movie['rating'] = round(new_rating, 1)
+    # 새 평점 계산
+    new_rating = ((current_rating * current_count) + rating_input) / (current_count + 1)
+    movie['average_rating'] = round(new_rating, 1)
+    movie['rating_count'] += 1
+
+    # 사용자 평점 업데이트
+    user_rating_entry = f"{user_id}:{rating_input}"
+    movie['user_ratings'].append(user_rating_entry)  # 항상 새 평점을 추가
+
+    # 사용자 데이터 저장
     user_info["rated_movies"][movie_id] = rating_input
-    print(f"평점이 {rating_input}점으로 등록되었습니다!\n")
     save_user_data(user_info)
-    save_movie_data(movie_id, movie)
+
+    # 영화 데이터 저장 (MovieData.update_movie_file 사용)
+    movie_id_int = int(movie_id)
+    MovieData.movies[movie_id_int] = movie
+    MovieData.update_movie_file()
+
+    print(f"평점이 {rating_input}점으로 등록되었습니다!")
+
     
 def load_user_data(user_id):
     with open("./data/user.txt", "r") as file:
@@ -155,16 +161,3 @@ def save_user_data(user_info):
         users.append(f"{user_info['id']}/{user_info['password']}/{favorited_str}/{rated_str}\n")
     with open("./data/user.txt", "w") as file:
         file.writelines(users)
-
-def save_movie_data(movie_id, updated_movie):
-    movies = get_movies()
-    movies[movie_id] = updated_movie
-    with open("data/movie.txt", "w", encoding="utf-8", newline="") as file:
-        for id, data in movies.items():
-            # 장르 리스트를 쉼표료 연결된 문자열로 반환
-            genres_str = ','.join(data['genre']) if isinstance(data['genre'], list) else data['genre']
-            # 각 영화 정보를 슬래시로 구분하여 저장
-            line = f"{id}/{data['title']}/{data['year']}/{data['director']}/" \
-                   f"{genres_str}/{data['runtime']}/{data['views']}/" \
-                   f"{data['rating']}/{data['rating_count']}\n"
-            file.write(line)
