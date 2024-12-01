@@ -195,10 +195,14 @@ class MovieData:
 
         with open(file_path, 'w', encoding='utf-8', newline='') as file:
             for movie_id, data in cls.movies.items():
-                # 장르 리스트를 쉼표로 연결
+
+                # 장르 및 사용자 평가를 리스트를 쉼표로 연결
                 genres_str = ','.join(data['genre'])
+                user_ratings = ','.join(data['user_ratings'])
+
                 # 각 영화 정보를 슬래시로 구분하여 저장
-                line = f"{movie_id}/{data['title']}/{data['year']}/{data['director']}/" \
+                line = f"{movie_id}/{data['title']}/{data['year']}/{data['directors']}/" \
                        f"{genres_str}/{data['runtime']}/{data['views']}/" \
-                       f"{data['rating']}/{data['rating_count']}\n"
+                       f"{data['average_rating']}/{data['rating_count']}" \
+                       f"{data['user_ratings']}\n"
                 file.write(line)
