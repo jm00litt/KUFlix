@@ -47,7 +47,7 @@ def display_movie_details(user_id, movie_id):
             print(f"조회수: {movie['views']}")
             print(f"찜: {favorited_status}")
             print("============================================")
-            print("찜하기/해제하기: 1 / 평점 남기기: 2 / 뒤로가기: 0")
+            print("찜하기/해제하기: 1 / 평점 남기기: 2 / 평가 인원 확인하기: 3 / 뒤로가기: 0")
             if not choose_status(user_id, movie_id):
                 break
     else:
@@ -56,8 +56,8 @@ def display_movie_details(user_id, movie_id):
 def choose_status(user_id, movie_id):
     valid_input = False
     while not valid_input:
-        choice = input("번호를 입력하세요(0-2): ").strip()
-        if choice.isdigit() and int(choice) in [0, 1, 2]:
+        choice = input("번호를 입력하세요(0-3): ").strip()
+        if choice.isdigit() and int(choice) in [0, 1, 2, 3]:
             valid_input = True
         elif not choice.isdigit():
             print("숫자만 입력하세요.")
@@ -69,6 +69,8 @@ def choose_status(user_id, movie_id):
         like_movie(user_id, movie_id)
     elif choice == 2:
         rate_movie(user_id, movie_id)
+    elif choice == 3:
+        check_movie(movie_id)
     elif choice == 0:
         return False
     return True
@@ -126,7 +128,35 @@ def rate_movie(user_id, movie_id):
 
     print(f"평점이 {rating_input}점으로 등록되었습니다!")
 
+def check_movie(movie_id):
+   
+    movies = get_movies()
+    movie = movies.get(movie_id)
     
+    if not movie:
+        print("해당 ID의 영화가 존재하지 않습니다.")
+        return
+
+  
+    user_ratings = movie.get("user_ratings", [])
+    if not user_ratings or len(user_ratings) == 0:
+        print("아직 평점이 남겨지지 않았습니다.")
+        return
+
+    print("\n평가한 사용자 목록:")
+    print("=" * 40)
+
+    
+    for review in user_ratings:
+        if review.strip():  
+            try:
+                user_id, rating = review.split(":")
+                print(f"사용자: {user_id} | 평점: {rating}")
+            except ValueError:
+                print(f"잘못된 평점 데이터 형식: {review}")
+
+    print("=" * 40)
+
 def load_user_data(user_id):
     with open("./data/user.txt", "r") as file:
         for line in file:
