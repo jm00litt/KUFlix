@@ -219,17 +219,19 @@ def check_movie(movie_id):
 
     print("=" * 40)
     print('유저 아이디 입력시 해당 유저의 <평점,영화> 리스트를 출력합니다.(뒤로가기는 0)\n')
-        valid_input = False
-        while not valid_input:
-            choice = input("아이디 또는 번호를 입력하세요(0): ")
-            if choice.isdigit() and int(choice) in [0]:
-                valid_input = True
-                return
-            elif choice in user_ids:
-                show_users_rate(choice)
-                break
-            else:
-                print("해당 아이디가 없거나 잘못된 번호입니다.")
+    valid_input = False
+    users = load()
+    user_ids = users.keys()
+    while not valid_input:
+        choice = input("아이디 또는 번호를 입력하세요(0): ")
+        if choice.isdigit() and int(choice) in [0]:
+            valid_input = True
+            return
+        elif choice in user_ids:
+            show_users_rate(choice)
+            break
+        else:
+            print("해당 아이디가 없거나 잘못된 번호입니다.")
 
     
 def load_user_data(user_id):
