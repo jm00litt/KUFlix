@@ -48,7 +48,8 @@ def display_movie_details(user_id, movie_id):
             print(f"조회수: {movie['views']}")
             print(f"찜: {favorited_status}")
             print("============================================")
-            print("찜하기/해제하기: 1 / 평점 남기기: 2 / 평점 남긴 유저 확인하기: 3 / 뒤로가기: 0")
+            print("찜하기/해제하기: 1 / 평점 남기기: 2 / 평가 인원 확인하기: 3 / 뒤로가기: 0")
+
             if not choose_status(user_id, movie_id):
                 break
     else:
@@ -71,7 +72,7 @@ def choose_status(user_id, movie_id):
     elif choice == 2:
         rate_movie(user_id, movie_id)
     elif choice == 3:
-        show_rated_users(movie_id)
+        check_movie(movie_id)
     elif choice == 0:
         return False
     return True
@@ -135,31 +136,7 @@ def rate_movie(user_id, movie_id):
     print(f"평점이 {rating_input}점으로 등록되었습니다!")
 
 
-def show_rated_users(movie_id):
-    while True : 
-        print(f"============================================")
-        users = load()
-        user_ids = users.keys()
-        for i in user_ids :
-            user_data = load_user_data(i)
-            user_movies = user_data['rated_movies'].keys()
-            if movie_id in user_movies:
-                print(f'{user_data["rated_movies"][movie_id]} : {i}')
-        print("============================================")
-        print('유저 아이디 입력시 해당 유저의 <평점,영화> 리스트를 출력합니다.(뒤로가기는 0)\n')
-        valid_input = False
-        while not valid_input:
-            choice = input("아이디 또는 번호를 입력하세요(0): ")
-            if choice.isdigit() and int(choice) in [0]:
-                valid_input = True
-                return
-            elif choice in user_ids:
-                show_users_rate(choice)
-                break
-            else:
-                print("해당 아이디가 없거나 잘못된 번호입니다.")
-
-
+    
 def show_users_rate(user_id):
     print(f"============================================")
     print(f'유저 아이디 : {user_id}')
@@ -213,6 +190,47 @@ def show_users_rate(user_id):
             return
         else :
             print('잘못된 입력입니다.')
+
+def check_movie(movie_id):
+   
+    movies = get_movies()
+    movie = movies.get(movie_id)
+    
+    if not movie:
+        print("해당 ID의 영화가 존재하지 않습니다.")
+        return
+
+    user_ratings = movie.get("user_ratings", [])
+    if not user_ratings or len(user_ratings) == 0:
+        print("아직 평점이 남겨지지 않았습니다.")
+        return
+
+    print("\n평가한 사용자 목록:")
+    print("=" * 40)
+
+    
+    for review in user_ratings:
+        if review.strip():  
+            try:
+                user_id, rating = review.split(":")
+                print(f"사용자: {user_id} | 평점: {rating}")
+            except ValueError:
+                print(f"잘못된 평점 데이터 형식: {review}")
+
+    print("=" * 40)
+    print('유저 아이디 입력시 해당 유저의 <평점,영화> 리스트를 출력합니다.(뒤로가기는 0)\n')
+        valid_input = False
+        while not valid_input:
+            choice = input("아이디 또는 번호를 입력하세요(0): ")
+            if choice.isdigit() and int(choice) in [0]:
+                valid_input = True
+                return
+            elif choice in user_ids:
+                show_users_rate(choice)
+                break
+            else:
+                print("해당 아이디가 없거나 잘못된 번호입니다.")
+
     
 def load_user_data(user_id):
     with open("./data/user.txt", "r") as file:
