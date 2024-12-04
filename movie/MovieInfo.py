@@ -119,7 +119,12 @@ def rate_movie(user_id, movie_id):
     movie['user_ratings'].append(user_rating_entry)  # 항상 새 평점을 추가
 
     # 사용자 데이터 저장
-    user_info["rated_movies"][movie_id] = rating_input
+    if movie_id in user_info["rated_movies"].keys():
+        tmp = user_info["rated_movies"][movie_id]
+        tmp.extend([rating_input])
+        user_info["rated_movies"][movie_id] = tmp
+    else :
+        user_info["rated_movies"][movie_id] = [rating_input]
     save_user_data(user_info)
 
     # 영화 데이터 저장 (MovieData.update_movie_file 사용)
@@ -183,11 +188,13 @@ def show_users_rate(user_id):
         print(f"장르: {genres_str}")
         print(f"영화 감독: {movie['directors']}")
         print(f'영화 아이디 : {key}\n')
-        rate_total_count+=1
         for g in movie['genre'] :
-            rate_genre_count[g]+=1
-            rate_genre_average[g] +=float(user_data["rated_movies"][key])
-        rate_total_average+=float(user_data["rated_movies"][key])
+            for rate in user_data['rated_movies'][key] :
+                rate_genre_average[g] +=float(rate)
+                rate_genre_count[g]+=1
+        for rate in user_data['rated_movies'][key] :
+            rate_total_average+=float(rate)
+            rate_total_count+=1
     if(rate_total_count == 0):
         print(f'전체 평점 평균 : -')
     else : 
