@@ -22,9 +22,6 @@ def display_search_page(user_id):
             if len(user_input) == 0 or len(user_input) > 50:
                 print("잘못된 입력입니다. 최소 한 글자 이상, 최대 50자 이하로 입력해주세요.")
                 continue
-            elif (user_input[0] == '#'):
-                print("#으로 시작함. 여기 수정 예정.")
-                continue
 
             searched_list = search_movies(user_input)
             if len(searched_list) == 0:
@@ -103,9 +100,15 @@ def search_movies(keyword):
     processed_keyword = keyword.replace(" ", "").lower()
 
     # '#'으로 시작하는 검색인 경우 (감독 아이디를 통한 검색)
-    if (processed_keyword[0] == '#'):
-        input_id_str = processed_keyword[1:]
-        movie_data["director_ids"]
+    if keyword.startswith("#"):  # 입력이 "#"으로 시작하면
+        try:
+            director_id = int(keyword[1:])  # "#" 다음 숫자를 추출 시도
+            for movie_id, movie_data in MovieData.movies.items():
+                if director_id in movie_data["director_ids"]:  # director_ids에 해당 ID가 있는지 확인
+                    matched_movie_ids.append(movie_id)  # 조건을 만족하면 추가
+        except ValueError:  # 숫자로 변환되지 않으면
+            print("# 뒤는 숫자여야 합니다.")  # 예외 메시지 출력
+    # 일반 검색 (영화 제목 및 감독명 기반)
     else:
         for movie_id, movie_data in MovieData.movies.items():
             # title과 director의 공백 제거 및 소문자 처리
