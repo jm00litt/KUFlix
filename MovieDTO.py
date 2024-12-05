@@ -143,7 +143,9 @@ class MovieData:
             print(f"개봉년도 형식 오류: {year}")
             return False
 
-        # 감독명: 길이 1~20, 한글/영문 -> 길이 상관없이 숫자만 반점으로 구분
+        # 감독명: 길이 1~20, 한글/영문
+        # ->
+        # 감독 아이디: 길이 상관없이 숫자와 반점으로 구분
         if not (all(c.isdigit() or c == ',' for c in director_ids)  # 숫자와 반점만 포함
                 and ',,' not in director_ids                        # 반점이 연속으로 나오지 않음
                 and not director_ids.startswith(',')               # 시작이 반점이 아님
@@ -167,7 +169,7 @@ class MovieData:
             print(f"조회수 형식 오류: {views}")
             return False
 
-        # 평점: 0.0에서 5.0 사이의 실수
+        # 평균 평점: 0.0에서 5.0 사이의 실수
         try:
             rating_float = float(rating)
             if len(rating) != 3:
