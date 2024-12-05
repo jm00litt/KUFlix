@@ -166,12 +166,21 @@ def show_users_rate(user_id):
         print(f"영화 감독: {movie['directors']}")
         print(f'영화 아이디 : {key}\n')
         for g in movie['genre'] :
+            score = 0.0
+            cnt = 0
             for rate in user_data['rated_movies'][key] :
-                rate_genre_average[g] +=float(rate)
-                rate_genre_count[g]+=1
+                score+=float(rate)
+                cnt+=1
+            rate_genre_average[g] +=(score/cnt)
+            rate_genre_count[g]+=1
+
+        score = 0.0
+        cnt = 0
         for rate in user_data['rated_movies'][key] :
-            rate_total_average+=float(rate)
-            rate_total_count+=1
+            score+=float(rate)
+            cnt+=1
+        rate_total_average+=(score/cnt)
+        rate_total_count+=1
     if(rate_total_count == 0):
         print(f'전체 평점 평균 : -')
     else : 
@@ -206,17 +215,14 @@ def check_movie(movie_id):
         return
 
     print("\n평가한 사용자 목록:")
-    print("=" * 40)
-
-    
-    for review in user_ratings:
-        if review.strip():  
-            try:
-                user_id, rating = review.split(":")
-                print(f"사용자: {user_id} | 평점: {rating}")
-            except ValueError:
-                print(f"잘못된 평점 데이터 형식: {review}")
-
+    print(f"============================================")
+    users = load()
+    user_ids = users.keys()
+    for i in user_ids :
+        user_data = load_user_data(i)
+        user_movies = user_data['rated_movies'].keys()
+        if movie_id in user_movies:
+            print(f'{i} : {user_data["rated_movies"][movie_id]}')
     print("=" * 40)
     print('유저 아이디 입력시 해당 유저의 <평점,영화> 리스트를 출력합니다.(뒤로가기는 0)\n')
     valid_input = False
