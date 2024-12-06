@@ -92,17 +92,19 @@ def rate_movie(user_id, movie_id):
     movie = get_movies().get(movie_id)
     print("\n평점을 남겨주세요!")
     while True:
-        print("[1] ⭐️ [2] ⭐️⭐️ [3] ⭐️⭐️⭐️ [4] ⭐️⭐️⭐️⭐️ [5] ⭐️⭐️⭐️⭐️⭐️ [0] 뒤로가기")
-        rating_input = input("번호를 입력하세요(0-5): ").strip()
+        print("[1] ⭐️ [2] ⭐️⭐️ [3] ⭐️⭐️⭐️ [4] ⭐️⭐️⭐️⭐️ [5] ⭐️⭐️⭐️⭐️⭐️ [6] 0점 [0] 뒤로가기")
+        rating_input = input("번호를 입력하세요(0-6): ").strip()
         if not rating_input.isdigit():
             print("숫자만 입력 가능합니다.")
             continue
         rating_input = int(rating_input)
-        if rating_input < 0 or rating_input > 5:
+        if rating_input < 0 or rating_input > 6:
             print("존재하지 않는 번호입니다.")
             continue
         if rating_input == 0:
             return
+        if rating_input == 6:  # 6번 선택시 0점으로 변환
+            rating_input = 0
         break
 
     # 평점 계산 로직
