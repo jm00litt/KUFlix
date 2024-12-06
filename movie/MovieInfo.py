@@ -92,20 +92,48 @@ def rate_movie(user_id, movie_id):
     movie = get_movies().get(movie_id)
     print("\n평점을 남겨주세요!")
     while True:
-        print("[1] ⭐️ [2] ⭐️⭐️ [3] ⭐️⭐️⭐️ [4] ⭐️⭐️⭐️⭐️ [5] ⭐️⭐️⭐️⭐️⭐️ [6] 0점 [0] 뒤로가기")
-        rating_input = input("번호를 입력하세요(0-6): ").strip()
-        if not rating_input.isdigit():
-            print("숫자만 입력 가능합니다.")
+        try:
+            print("[1] ⭐️ [2] ⭐️⭐️ [3] ⭐️⭐️⭐️ [4] ⭐️⭐️⭐️⭐️ [5] ⭐️⭐️⭐️⭐️⭐️ [6] 0점 [0] 뒤로가기")
+            rating_input = input("번호를 입력하세요(0-6): ").strip()
+            
+            # 입력값이 비어있는 경우
+            if not rating_input:
+                print("입력값이 비어있습니다. 다시 입력해주세요.")
+                continue
+                
+            # 숫자가 아닌 경우
+            if not rating_input.isdigit():
+                print("숫자만 입력 가능합니다.")
+                continue
+                
+            # 숫자로 변환
+            rating_input = int(rating_input)
+            
+            # 범위 체크
+            if rating_input < 0 or rating_input > 6:
+                print("0부터 6까지의 숫자만 입력 가능합니다.")
+                continue
+                
+            # 뒤로가기
+            if rating_input == 0:
+                print("평점 입력을 취소합니다.")
+                return
+                
+            # 0점 선택
+            if rating_input == 6:
+                rating_input = 0
+                
+            break
+            
+        except ValueError:
+            print("올바르지 않은 입력입니다. 다시 입력해주세요.")
             continue
-        rating_input = int(rating_input)
-        if rating_input < 0 or rating_input > 6:
-            print("존재하지 않는 번호입니다.")
-            continue
-        if rating_input == 0:
+        except KeyboardInterrupt:
+            print("\n평점 입력을 취소합니다.")
             return
-        if rating_input == 6:  # 6번 선택시 0점으로 변환
-            rating_input = 0
-        break
+        except:
+            print("예상치 못한 오류가 발생했습니다. 다시 입력해주세요.")
+            continue
 
     # 평점 계산 로직
     rating_input = float(rating_input)
