@@ -234,22 +234,16 @@ def view_movie_ratings(movie_id):
     
     movies = get_movies()
     movie = movies.get(movie_id)
-    
-    if not movie:
-        print("해당 ID의 영화가 존재하지 않습니다.")
-        return
 
     user_ratings = movie.get("user_ratings", [])
-    if not user_ratings or len(user_ratings) == 0:
-        print("아직 평점이 남겨지지 않았습니다.")
-        return
+    
 
     print("\n평가한 사용자 목록")
     print(f"============================================")
 
-    # 평점 데이터를 시간 순서대로 출력
+    # 평점 데이터를 순서대로 출력
     for review in user_ratings:
-        if review.strip():  # 빈 값 체크
+        if review.strip():  
             try:
                 user_id, rating = review.split(":")
                 print(f"{user_id}: {rating}")
@@ -259,7 +253,6 @@ def view_movie_ratings(movie_id):
     print("============================================")
     print('유저 아이디 입력 시 해당 유저의 <평점,영화> 리스트를 출력합니다.(뒤로 가기는 0)\n')
 
-    # 사용자 입력 처리
     users = load()
     user_ids = users.keys()
     while True:
