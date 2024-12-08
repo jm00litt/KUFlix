@@ -72,7 +72,7 @@ def choose_status(user_id, movie_id):
     elif choice == 2:
         rate_movie(user_id, movie_id)
     elif choice == 3:
-        check_movie(movie_id)
+        view_movie_ratings(movie_id)
     elif choice == 0:
         return False
     return True
@@ -230,8 +230,8 @@ def show_users_rate(user_id):
         else :
             print('잘못된 입력입니다.')
 
-def check_movie(movie_id):
-   
+def view_movie_ratings(movie_id):
+    
     movies = get_movies()
     movie = movies.get(movie_id)
     
@@ -244,28 +244,30 @@ def check_movie(movie_id):
         print("아직 평점이 남겨지지 않았습니다.")
         return
 
-    print("\n평가한 사용자 목록:")
+    print("\n평가한 사용자 목록")
     print(f"============================================")
+
+    # 평점 데이터를 시간 순서대로 출력
+    for review in user_ratings:
+        if review.strip():  # 빈 값 체크
+            try:
+                user_id, rating = review.split(":")
+                print(f"{user_id}: {rating}")
+            except ValueError:
+                print(f"잘못된 평점 데이터 형식: {review}")
+
+    print("============================================")
+    print('유저 아이디 입력 시 해당 유저의 <평점,영화> 리스트를 출력합니다.(뒤로 가기는 0)\n')
+
+    # 사용자 입력 처리
     users = load()
     user_ids = users.keys()
-    for i in user_ids :
-        user_data = load_user_data(i)
-        user_movies = user_data['rated_movies'].keys()
-        if movie_id in user_movies:
-            print(f'{i} : {user_data["rated_movies"][movie_id]}')
-    print("=" * 40)
-    print('유저 아이디 입력시 해당 유저의 <평점,영화> 리스트를 출력합니다.(뒤로가기는 0)\n')
-    valid_input = False
-    users = load()
-    user_ids = users.keys()
-    while not valid_input:
-        choice = input("아이디 또는 번호를 입력하세요(0): ")
-        if choice.isdigit() and int(choice) in [0]:
-            valid_input = True
+    while True:
+        choice = input("아이디 또는 번호를 입력하세요(0): ").strip()
+        if choice.isdigit() and int(choice) == 0:
             return
         elif choice in user_ids:
             show_users_rate(choice)
-            break
         else:
             print("해당 아이디가 없거나 잘못된 번호입니다.")
 
