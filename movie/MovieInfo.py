@@ -224,7 +224,7 @@ def show_users_rate(user_id):
     print(f"============================================")
     while True :
         print('뒤로가기 : 0')
-        zero = input('번호를 입력하세요 : ')
+        zero = input('번호를 입력하세요 : ').strip()
         if zero == '0':
             return
         else :
