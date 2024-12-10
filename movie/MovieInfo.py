@@ -244,15 +244,21 @@ def view_movie_ratings(movie_id):
         print("\n평가한 사용자 목록")
         print(f"============================================")
 
-        # 평점 데이터를 순서대로 출력
-        users = load()
-        user_ids = users.keys()
-        for i in user_ids :
-            user_data = load_user_data(i)
-            user_movies = user_data['rated_movies'].keys()
-            if movie_id in user_movies:
-                print(f'{user_data["rated_movies"][movie_id]} : {i}')
-                
+        user_ratings_dict = {}
+        for review in user_ratings:
+            if review.strip():
+                try:
+                    user_id, rating = review.split(":")
+                    if user_id not in user_ratings_dict:
+                        user_ratings_dict[user_id] = []
+                    user_ratings_dict[user_id].append(rating)
+                except ValueError:
+                    print(f"잘못된 평점 데이터 형식: {review}")
+
+        for user_id, ratings in user_ratings_dict.items():
+            ratings_str = ", ".join(ratings)
+            print(f"{user_id}: {ratings_str}")
+
         print("============================================")
         print('유저 아이디 입력 시 해당 유저의 <평점,영화> 리스트를 출력합니다.(뒤로 가기는 0)\n')
 
@@ -264,9 +270,9 @@ def view_movie_ratings(movie_id):
                 return
             elif choice in user_ids:
                 show_users_rate(choice)
-                break
             else:
                 print("해당 아이디가 없거나 잘못된 번호입니다.")
+
 
     
 def load_user_data(user_id):
